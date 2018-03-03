@@ -1,0 +1,5 @@
+These code examples do not apply developing for Windows Store Apps because the Windows Runtime provides different streams types reading and writing to files.
+For an example that shows how to read text from a file within the context of a Windows Store app.
+The first example shows a synchronous read operation within a console application. In this example, the text file is opened using a stream reader, the contents are copied to a string and string is output to the console.
+NTT
+The second example shows an asynchronous read operation within a Windows Presentation Foundation.
