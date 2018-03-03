@@ -55,7 +55,7 @@ namespace Homework1
         }
 
         //1412543
-        public void WriteFile(List<String> list, string fileOutput)
+        public void WriteListToFile(List<String> list, string fileOutput)
         {
             using (StreamWriter wr = new StreamWriter(fileOutput))
             {
@@ -63,6 +63,20 @@ namespace Homework1
                 {
                     wr.WriteLine(i);
                 }
+            }
+        }
+
+        //1412543
+        public void WriteMatrixToFile (float[,] matrix, string fileOutput)
+        {
+            using (StreamWriter wr = new StreamWriter(fileOutput))
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                        wr.Write(matrix[i, j] + " ");
+                    wr.WriteLine();
+                }  
             }
         }
     }
