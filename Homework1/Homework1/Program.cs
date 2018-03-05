@@ -19,6 +19,12 @@ namespace Homework1
             FileIO file = new FileIO();
 
             list = file.ReadFile(fileInput);
+
+            // 1412595
+            Bow_tfidf bow_Tfidf = new Bow_tfidf();
+            // list là văn bản đã tiền xử lý
+            bow_Tfidf.FeatureList(list);
+
             file.WriteListToFile(list, fileOutput);
             int round =  file.ReadFileWithOneNumber(fileRound);
             Console.WriteLine("Round: " + round);

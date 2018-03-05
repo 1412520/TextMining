@@ -10,3 +10,10 @@ E:\Nam 4\HKII\CHUYEN_DE_CHON_LOC\Homeworks\TextMining\Homework1\Homework1\obj\De
 E:\Nam 4\HKII\CHUYEN_DE_CHON_LOC\Homeworks\TextMining\Homework1\Homework1\bin\Debug\Homework1.exe
 E:\Nam 4\HKII\CHUYEN_DE_CHON_LOC\Homeworks\TextMining\Homework1\Homework1\bin\Debug\Homework1.pdb
 E:\Nam 4\HKII\CHUYEN_DE_CHON_LOC\Homeworks\TextMining\Homework1\Homework1\obj\Debug\Homework1.csprojResolveAssemblyReference.cache
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\bin\Debug\Homework1.exe.config
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\bin\Debug\Homework1.exe
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\bin\Debug\Homework1.pdb
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\obj\Debug\Homework1.csprojResolveAssemblyReference.cache
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\obj\Debug\Homework1.csproj.CoreCompileInputs.cache
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\obj\Debug\Homework1.exe
+C:\Users\trucv\Desktop\TextMining\Homework1\Homework1\obj\Debug\Homework1.pdb
