@@ -10,3 +10,6 @@ C:\Users\Thao Lua\Desktop\1412503\1412503\obj\Debug\1412503.pdb
 C:\Users\Thao Lua\Desktop\1412503\1412503\bin\Debug\1412503.exe
 C:\Users\Thao Lua\Desktop\1412503\1412503\bin\Debug\1412503.pdb
 C:\Users\Thao Lua\Desktop\1412503\1412503\obj\Debug\1412503.csprojResolveAssemblyReference.cache
+D:\nam4-hk2\TextMining\TextMining\1412503\1412503\bin\Debug\1412503.exe.config
+D:\nam4-hk2\TextMining\TextMining\1412503\1412503\obj\Debug\1412503.exe
+D:\nam4-hk2\TextMining\TextMining\1412503\1412503\obj\Debug\1412503.pdb
