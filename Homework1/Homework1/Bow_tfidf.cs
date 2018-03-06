@@ -130,9 +130,9 @@ namespace Homework1
                 int freq, maxFreq;
                 freq = doc.getFrequency(feature);
                 maxFreq = doc.getMaxFrequency();
-                double log = Math.Log10(totalDocs / num_DocsContainFeature);
-                double temp = (1.0 * freq / maxFreq);
-                tf_idf = temp * log;
+                //double log = Math.Log10(totalDocs / num_DocsContainFeature);
+                //double temp = (1.0 * freq / maxFreq);
+                tf_idf = (1.0 * freq / maxFreq) * Math.Log10(totalDocs / num_DocsContainFeature);
             }
             catch (Exception ex)
             {

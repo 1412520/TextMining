@@ -9,7 +9,7 @@ namespace Homework1
     public class Document
     {
         //1412503
-        private Dictionary<String, int> doc;
+        private Dictionary<String, int> termFrequency;
         private int maxFreq;
 
         //1412503
@@ -18,36 +18,29 @@ namespace Homework1
         //1412503
         public Document(String _doc)
         {
-            maxFreq = 0;
-            int freq;
+            maxFreq = 1;
 
             string[] splitDoc = _doc.Split(' ');
-            doc = new Dictionary<string, int>();
+            termFrequency = new Dictionary<string, int>();
             for (int i = 0; i < splitDoc.Count(); i++)
             {
-                freq = 0;
+                if (termFrequency.ContainsKey(splitDoc[i]))
+                    termFrequency[splitDoc[i]]++;
+                else
+                    termFrequency.Add(splitDoc[i], 1);
+            }
 
-                try
-                {
-                    freq = ++doc[splitDoc[i]];
-                }
-                catch
-                {
-                    freq = 1;
-                }
-
+            foreach(int freq in termFrequency.Values)
+            {
                 if (freq > maxFreq)
-                {
                     maxFreq = freq;
-                }
-                doc[splitDoc[i]] = freq;
             }
         }
 
         //1412503
         public int getFrequency(string word)
         {
-            return doc[word];
+            return termFrequency[word];
         }
 
         //1412503
@@ -59,7 +52,7 @@ namespace Homework1
         //1412542
         public bool Contains(string word)
         {
-            return doc.ContainsKey(word);
+            return termFrequency.ContainsKey(word);
         }
     }
 }
