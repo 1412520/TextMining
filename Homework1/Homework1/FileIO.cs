@@ -10,7 +10,7 @@ namespace Homework1
     class FileIO
     {
         //1412543
-        public List<String> ReadFile(string fileInput)
+        public static List<string> ReadFile(string fileInput)
         {
             List<String> list = new List<string>();
             try
@@ -34,7 +34,7 @@ namespace Homework1
         }
 
         //1412543
-        public int ReadFileWithOneNumber (string fileInput)
+        public static int ReadFileWithOneNumber (string fileInput)
         {
             int round = 0;
 
@@ -55,7 +55,7 @@ namespace Homework1
         }
 
         //1412543
-        public void WriteListToFile(List<String> list, string fileOutput)
+        public static void WriteListToFile(List<String> list, string fileOutput)
         {
             using (StreamWriter wr = new StreamWriter(fileOutput))
             {
@@ -67,7 +67,7 @@ namespace Homework1
         }
 
         //1412543
-        public void WriteMatrixToFile (float[,] matrix, string fileOutput)
+        public static void WriteMatrixToFile (double[,] matrix, string fileOutput)
         {
             using (StreamWriter wr = new StreamWriter(fileOutput))
             {
@@ -81,7 +81,7 @@ namespace Homework1
         }
 
         //1412520
-        public HashSet<string> ReadFileIntoHashTable(string fileInput)
+        public static HashSet<string> ReadFileIntoHashTable(string fileInput)
         {
             HashSet<string> list = new HashSet<string>();
             try

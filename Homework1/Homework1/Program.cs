@@ -10,33 +10,25 @@ namespace Homework1
     {
         static void Main(string[] args)
         {
-            String fileInput = "../../input.txt";
-            String fileRound = "../../round.txt";
-            String fileOutput = "../../output.txt";
-            String fileOutputMatrix = "../../ntt.txt";
+            String inputFile = "../../raw_text.txt";
+            string processedTextFile = "../../processedFile.txt";
+            string featureFile = "../../featureList.txt";
+            String roundFile = "../../round.txt";
+            String outputFile = "../../output.txt";
+            String stopWordFile = "../../stop-words.txt";
             List<String> list = new List<string>();
 
-            FileIO file = new FileIO();
+            // FileIO file = new FileIO();
 
-            list = file.ReadFile(fileInput);
+            // Pre-processing text
+            Bow_tfidf.ReproduceText(inputFile, processedTextFile, stopWordFile);
+            
+            // Extract features
+            Bow_tfidf.FeatureList(processedTextFile, featureFile);
 
-            // 1412595
-            Bow_tfidf bow_Tfidf = new Bow_tfidf();
-            // list là văn bản đã tiền xử lý
-            bow_Tfidf.FeatureList(list);
+            // Calculate tf_idf
+            Bow_tfidf.BoW_tfidf(processedTextFile, outputFile, featureFile, roundFile);
 
-            file.WriteListToFile(list, fileOutput);
-            int round =  file.ReadFileWithOneNumber(fileRound);
-            Console.WriteLine("Round: " + round);
-
-            float[,] IntArray = 
-                    { 
-                        {1, 2}, 
-                        {3, 4}, 
-                        {5, 6} 
-                    };
-
-            file.WriteMatrixToFile(IntArray, fileOutputMatrix);
         }
     }
 }

@@ -8,12 +8,12 @@ namespace Homework1
 {
     class Bow_tfidf
     {
-        public void FeatureList(List<string> tienXuLy)
+        //1412595
+        public static void FeatureList(string inputFile, string outputFile)
         {
-            String fileFeatureList = "../../featureList.txt";
-            FileIO file = new FileIO();
+            List<string> docs = FileIO.ReadFile(inputFile);
             List<string> featureList = new List<string>();
-            foreach (string item0 in tienXuLy)
+            foreach (string item0 in docs)
             {
                 string[] arrListStr = item0.Split(' ');
                 foreach (string item1 in arrListStr)
@@ -25,27 +25,27 @@ namespace Homework1
                     }
                 }
             }
-            file.WriteListToFile(featureList, fileFeatureList);
+            FileIO.WriteListToFile(featureList, outputFile);
         }
 
         //1412520
-        private static HashSet<char> marks = new HashSet<char> { ',', '.', '!', '/', '-', '=', '~', '?' };
+        private static HashSet<char> marks = new HashSet<char> { ',', '.', '!', '/', '-', '=', '~', '?', ':', ';', '\'', '"', '(', ')', '[', ']', '{', '}'};
 
         //1412520
-        public static void ReproduceText(string inputFile, string outputFile)
+        public static void ReproduceText(string inputFile, string outputFile, string stopWordFile)
         {
-            FileIO fileReader = new FileIO();
-            List<string> input = fileReader.ReadFile(inputFile);
-            HashSet<string> stopWords = fileReader.ReadFileIntoHashTable("../../stop-words.txt");
+            //FileIO fileReader = new FileIO();
+            List<string> input = FileIO.ReadFile(inputFile);
+            HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
             List<string> output = new List<string>();
             foreach (var row in input)
-            {
+            { 
                 var outputRow = row.ToLower();
                 outputRow = RemoveMarksExtraSpaces(outputRow, marks);
                 outputRow = RemoveWordsFromString(outputRow, stopWords);
                 output.Add(outputRow);
             }
-            fileReader.WriteListToFile(output, outputFile);
+            FileIO.WriteListToFile(output, outputFile);
         }
 
         //1412520
@@ -94,6 +94,96 @@ namespace Homework1
             }
 
             return result.ToString().TrimEnd();
+        }
+
+        //1412542
+        // Return the number of documents contain the feature
+        public static int DocContainsFeature(string feature, List<Document> docList)
+        {
+            int quantity = 0;
+            try
+            {
+                foreach (Document doc in docList)
+                {
+                    if (doc.Contains(feature))
+                        quantity++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return quantity;
+        }
+
+        //1412542
+        // Return tf_idf of a feature in a document
+        public static double CalculateTfidf(string feature, Document doc, int totalDocs, int num_DocsContainFeature)
+        {
+            if (!doc.Contains(feature))
+                return 0;
+
+            double tf_idf = 0;
+            try
+            {
+                int freq, maxFreq;
+                freq = doc.getFrequency(feature);
+                maxFreq = doc.getMaxFrequency();
+                double log = Math.Log10(totalDocs / num_DocsContainFeature);
+                double temp = (1.0 * freq / maxFreq);
+                tf_idf = temp * log;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return tf_idf;
+        }
+
+        //1412542
+        public static void BoW_tfidf(string input, string output, string featureList, string roundFile)
+        {
+            //List<List<double>> weight = new List<List<double>>();
+            double[,] weight = null;
+            List<string> docList, wordList;
+            int round;
+            try
+            {
+                docList = FileIO.ReadFile(input);
+                wordList = FileIO.ReadFile(featureList);
+                round = FileIO.ReadFileWithOneNumber(roundFile);
+
+                List<Document> docs = new List<Document>();
+                foreach (string doc in docList)
+                {
+                    docs.Add(new Document(doc));
+                }
+
+                int totalDocs, numDocsContainFeature, numFeatures;
+                totalDocs = docList.Count;
+                numFeatures = wordList.Count;
+
+                weight = new double[totalDocs, numFeatures];
+                double tfidf;
+                for (int i = 0; i < totalDocs; i++)
+                {
+                    for (int j = 0; j < numFeatures; j++)
+                    {
+                        numDocsContainFeature = DocContainsFeature(wordList[j], docs);
+                        tfidf = CalculateTfidf(wordList[j], docs[i], totalDocs, numDocsContainFeature);
+                        weight[i, j] = Math.Round(tfidf, round, MidpointRounding.AwayFromZero);
+                    }
+                }
+
+                FileIO.WriteMatrixToFile(weight, output);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
