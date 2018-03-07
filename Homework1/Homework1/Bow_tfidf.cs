@@ -125,14 +125,12 @@ namespace Homework1
                 return 0;
 
             double tf_idf = 0;
-            try
+            try 
             {
                 int freq, maxFreq;
                 freq = doc.getFrequency(feature);
                 maxFreq = doc.getMaxFrequency();
-                //double log = Math.Log10(totalDocs / num_DocsContainFeature);
-                //double temp = (1.0 * freq / maxFreq);
-                tf_idf = (1.0 * freq / maxFreq) * Math.Log10(totalDocs / num_DocsContainFeature);
+                tf_idf = (1.0 * freq / maxFreq) * Math.Log10(1.0*totalDocs / num_DocsContainFeature);
             }
             catch (Exception ex)
             {
