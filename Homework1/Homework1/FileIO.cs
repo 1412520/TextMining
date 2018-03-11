@@ -84,7 +84,7 @@ namespace Homework1
         //1412520
         public static HashSet<string> ReadFileIntoHashTable(string fileInput)
         {
-            HashSet<string> list = new HashSet<string>();
+            HashSet<string> list = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             try
             {
                 using (StreamReader sr = new StreamReader(fileInput))

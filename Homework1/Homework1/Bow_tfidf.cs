@@ -39,7 +39,9 @@ namespace Homework1
             HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
             List<string> output = new List<string>();
             foreach (var row in input)
-            { 
+            {
+                if (string.IsNullOrEmpty(row))
+                    continue; 
                 var outputRow = row.ToLower();
                 outputRow = RemoveMarksExtraSpaces(outputRow, marks);
                 outputRow = RemoveWordsFromString(outputRow, stopWords);
