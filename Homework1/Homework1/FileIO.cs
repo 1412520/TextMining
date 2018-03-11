@@ -20,7 +20,8 @@ namespace Homework1
                     String line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        list.Add(line);
+                        if (line != "")
+                            list.Add(line);
                     }
                 } 
             }
@@ -69,7 +70,7 @@ namespace Homework1
         //1412543
         public static void WriteMatrixToFile (double[,] matrix, string fileOutput)
         {
-            using (StreamWriter wr = new StreamWriter(fileOutput))
+            using (StreamWriter wr = new StreamWriter(fileOutput)) 
             {
                 for (int i = 0; i < matrix.GetLength(0); i++)
                 {

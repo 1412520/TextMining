@@ -1,4 +1,3 @@
-practice bag words model tool feature generation
-transforming text bag words calculate measures characterize text
-common type characteristics features calculated bag words model term frequency number times term appears text
-construct lists record term frequencies distinct words
+a b c e
+g b c a f
+a e g
