@@ -29,25 +29,42 @@ namespace Homework1
         }
 
         //1412520
-        private static HashSet<char> marks = new HashSet<char> { ',', '.', '!', '/', '-', '=', '~', '?', ':', ';', '\'', '"', '(', ')', '[', ']', '{', '}'};
+        private static HashSet<char> marks = new HashSet<char> { ',', '.', '!', '/', '-', '=', '~', '?', ':', ';', '\'', '"', '(', ')', '[', ']', '{', '}' };
 
         //1412520
         public static void ReproduceText(string inputFile, string outputFile, string stopWordFile)
         {
-            //FileIO fileReader = new FileIO();
+
             List<string> input = FileIO.ReadFile(inputFile);
             HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
             List<string> output = new List<string>();
             foreach (var row in input)
             {
                 if (string.IsNullOrEmpty(row))
-                    continue; 
+                    continue;
                 var outputRow = row.ToLower();
                 outputRow = RemoveMarksExtraSpaces(outputRow, marks);
                 outputRow = RemoveWordsFromString(outputRow, stopWords);
+                outputRow = Stemming(outputRow);
                 output.Add(outputRow);
             }
+
             FileIO.WriteListToFile(output, outputFile);
+        }
+
+        // 1412542
+        // Stemming words in the document by poster stemming alogrithm
+        private static string Stemming(string doc)
+        {
+            var result = new StringBuilder();
+            var words = doc.Split(' '); //tach ra tung word vi su dung stringbuilder hieu qua hon, xu ly truc tiep tren string chu khong tao mot ban copy
+            string stemWord;
+            foreach (var word in words)
+            {
+                stemWord = PosterStemming.stem(word);
+                result = result.Append(stemWord + " ");
+            }
+           return result.ToString().TrimEnd();
         }
 
         //1412520
