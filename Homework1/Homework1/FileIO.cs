@@ -35,27 +35,6 @@ namespace Homework1
         }
 
         //1412543
-        public static int ReadFileWithOneNumber (string fileInput)
-        {
-            int round = 0;
-
-            try
-            {
-                using (StreamReader sr = new StreamReader(fileInput))
-                {
-                    round = Int16.Parse(sr.ReadLine());
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
-            }
-
-            return round;
-        }
-
-        //1412543
         public static void WriteListToFile(List<String> list, string fileOutput)
         {
             using (StreamWriter wr = new StreamWriter(fileOutput))
@@ -81,28 +60,5 @@ namespace Homework1
             }
         }
 
-        //1412520
-        public static HashSet<string> ReadFileIntoHashTable(string fileInput)
-        {
-            HashSet<string> list = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            try
-            {
-                using (StreamReader sr = new StreamReader(fileInput))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        list.Add(line);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
-            }
-
-            return list;
-        }
     }
 }

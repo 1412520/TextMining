@@ -36,7 +36,8 @@ namespace Homework1
         {
 
             List<string> input = FileIO.ReadFile(inputFile);
-            HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
+
+            HashSet<string> stopWords = new HashSet<string>(FileIO.ReadFile(stopWordFile));
             List<string> output = new List<string>();
             foreach (var row in input)
             {
@@ -170,7 +171,7 @@ namespace Homework1
             {
                 docList = FileIO.ReadFile(input);
                 wordList = FileIO.ReadFile(featureList);
-                round = FileIO.ReadFileWithOneNumber(roundFile);
+                round = Int16.Parse(FileIO.ReadFile(roundFile)[0]);
 
                 List<Document> docs = new List<Document>();
                 foreach (string doc in docList)

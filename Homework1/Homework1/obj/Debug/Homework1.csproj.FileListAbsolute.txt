@@ -26,3 +26,9 @@ D:\Semester 8\Selected Topics\TextMining\Homework1\Homework1\obj\Debug\Homework1
 D:\Semester 8\Selected Topics\TextMining\Homework1\Homework1\obj\Debug\Homework1.csprojResolveAssemblyReference.cache
 D:\Semester 8\Selected Topics\TextMining\Homework1\Homework1\bin\Debug\Homework1.exe
 D:\Semester 8\Selected Topics\TextMining\Homework1\Homework1\bin\Debug\Homework1.pdb
+E:\Nam 4\HKII\TextMining\Homework1\Homework1\bin\Debug\Homework1.exe.config
+E:\Nam 4\HKII\TextMining\Homework1\Homework1\obj\Debug\Homework1.exe
+E:\Nam 4\HKII\TextMining\Homework1\Homework1\obj\Debug\Homework1.pdb
+E:\Nam 4\HKII\TextMining\Homework1\Homework1\bin\Debug\Homework1.exe
+E:\Nam 4\HKII\TextMining\Homework1\Homework1\bin\Debug\Homework1.pdb
+E:\Nam 4\HKII\TextMining\Homework1\Homework1\obj\Debug\Homework1.csprojResolveAssemblyReference.cache
