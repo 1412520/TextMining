@@ -9,23 +9,37 @@ namespace Homework1
     class Bow_tfidf
     {
         //1412595
-        public static void FeatureList(string inputFile, string outputFile)
+        public static void CreateFeatureList(string inputFile, string outputFile)
         {
-            List<string> docs = FileIO.ReadFile(inputFile);
-            List<string> featureList = new List<string>();
-            foreach (string item0 in docs)
+            List<string> processDocs = FileIO.ReadFile(inputFile);
+            Dictionary<string, double> featureList = new Dictionary<string, double>();
+            int totalDocs = processDocs.Count;
+            foreach (string item0 in processDocs)
             {
                 string[] arrListStr = item0.Split(' ');
                 foreach (string item1 in arrListStr)
                 {
-                    bool isExists = featureList.Contains(item1);
+
+                    bool isExists = featureList.ContainsKey(item1);
                     if (isExists == false)
                     {
-                        featureList.Add(item1);
+                        int quantity = 0;
+                        foreach (string doc in processDocs)
+                        {
+                            if (doc.Contains(item1))
+                                quantity++;
+                        }
+                        double idf = Math.Log10(1.0 * totalDocs / quantity);
+                        featureList.Add(item1, idf);
                     }
                 }
             }
-            FileIO.WriteListToFile(featureList, outputFile);
+            List<string> featureDocs = new List<string>();
+            foreach (var item2 in featureList)
+            {
+                featureDocs.Add(item2.Key + ' ' + item2.Value);
+            }
+            FileIO.WriteListToFile(featureDocs, outputFile);
         }
 
         //1412520

@@ -24,7 +24,7 @@ namespace Homework1
             Bow_tfidf.ReproduceText(inputFile, processedTextFile, stopWordFile);
             
             // Extract features
-            Bow_tfidf.FeatureList(processedTextFile, featureFile);
+            Bow_tfidf.CreateFeatureList(processedTextFile, featureFile);
 
             // Calculate tf_idf
             Bow_tfidf.BoW_tfidf(processedTextFile, outputFile, featureFile, roundFile);        
