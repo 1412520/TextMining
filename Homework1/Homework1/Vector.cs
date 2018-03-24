@@ -26,5 +26,24 @@ namespace Homework1
             }
             return Math.Sqrt(squareSum);
         }
+
+        public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity)
+        {
+            if(listV.Count < quantity)
+            {
+                return null;
+            }
+            else
+            {
+                Dictionary<int, double> rs = new Dictionary<int, double>(quantity);
+                for (int i = 0; i < listV.Count(); i++)
+                {
+                    rs.Add(i, GetSimilarityMeasure(listV[i]));
+                }
+                rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
+                return rs;
+            }
+            
+        }
     }
 }
