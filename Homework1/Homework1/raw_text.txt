@@ -1,5 +1,2 @@
-A B C D         E
-
-
-G B  D C A F
-A E G
+this is a hat.
+i'm chatting
