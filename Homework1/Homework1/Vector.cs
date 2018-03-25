@@ -65,13 +65,17 @@ namespace Homework1
 
         public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity)
         {
-            if(listV.Count < quantity)
+            if(quantity <= 0)
             {
                 return null;
             }
             else
             {
-                Dictionary<int, double> rs = new Dictionary<int, double>(quantity);
+                if (listV.Count < quantity)
+                {
+                    quantity = listV.Count;
+                }
+                Dictionary<int, double> rs = new Dictionary<int, double>(listV.Count);
                 for (int i = 0; i < listV.Count(); i++)
                 {
                     rs.Add(i, GetSimilarityMeasure(listV[i]));
@@ -79,7 +83,6 @@ namespace Homework1
                 rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 return rs;
             }
-            
         }
     }
 }

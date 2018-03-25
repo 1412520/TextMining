@@ -11,24 +11,23 @@ namespace Homework1
         //1412595
         public static void CreateFeatureList(string inputFile, string outputFile)
         {
-            List<string> processDocs = FileIO.ReadFile(inputFile);
+            List<string> processText = FileIO.ReadFile(inputFile);
             Dictionary<string, double> featureList = new Dictionary<string, double>();
-            int totalDocs = processDocs.Count;
-            foreach (string item0 in processDocs)
+            int totalDocs = processText.Count;
+            List<Document> processDocs = new List<Document>();
+            foreach (string item in processText)
+            {
+                processDocs.Add(new Document(item));
+            }
+            foreach (string item0 in processText)
             {
                 string[] arrListStr = item0.Split(' ');
                 foreach (string item1 in arrListStr)
                 {
-
                     bool isExists = featureList.ContainsKey(item1);
                     if (isExists == false)
                     {
-                        int quantity = 0;
-                        foreach (string doc in processDocs)
-                        {
-                            if (doc.Contains(item1))
-                                quantity++;
-                        }
+                        int quantity = DocContainsFeature(item1, processDocs); 
                         double idf = Math.Log10(1.0 * totalDocs / quantity);
                         featureList.Add(item1, idf);
                     }
