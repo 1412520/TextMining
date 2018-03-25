@@ -21,8 +21,10 @@ namespace Homework1
             // FileIO file = new FileIO();
 
             // Pre-processing text
-            Bow_tfidf.ReproduceText(inputFile, processedTextFile, stopWordFile);
-            
+            List<string> input = FileIO.ReadFile(inputFile);
+            var output = Bow_tfidf.ReproduceText(input, stopWordFile);
+            FileIO.WriteListToFile(output, processedTextFile);
+
             // Extract features
             Bow_tfidf.CreateFeatureList(processedTextFile, featureFile);
 

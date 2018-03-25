@@ -46,26 +46,37 @@ namespace Homework1
         private static HashSet<char> marks = new HashSet<char> { ',', '.', '!', '/', '-', '=', '~', '?', ':', ';', '\'', '"', '(', ')', '[', ']', '{', '}' };
 
         //1412520
-        public static void ReproduceText(string inputFile, string outputFile, string stopWordFile)
+        public static List<string> ReproduceText(List<string> input, string stopWordFile)
         {
 
-            List<string> input = FileIO.ReadFile(inputFile);
+            
 
             HashSet<string> stopWords = new HashSet<string>(FileIO.ReadFile(stopWordFile));
             List<string> output = new List<string>();
             foreach (var row in input)
             {
                 if (string.IsNullOrEmpty(row))
+                {
+                    output.Add(row);
                     continue;
-                var outputRow = row.ToLower();
-                outputRow = RemoveMarksExtraSpaces(outputRow, marks);
-                outputRow = RemoveWordsFromString(outputRow, stopWords);
-                outputRow = Stemming(outputRow);
+                }
+
+                var outputRow = StandardizeString(row, stopWords);
                 output.Add(outputRow);
             }
 
-            FileIO.WriteListToFile(output, outputFile);
+            return output;
         }
+
+        public static string StandardizeString(string input, HashSet<string> stopWords)
+        {
+            var output = input.ToLower();
+            output = RemoveMarksExtraSpaces(output);
+            output = RemoveWordsFromString(output, stopWords);
+            output = Stemming(output);
+            return output;
+        }
+
 
         // 1412542
         // Stemming words in the document by poster stemming alogrithm
@@ -83,7 +94,7 @@ namespace Homework1
         }
 
         //1412520
-        public static string RemoveMarksExtraSpaces(string input, HashSet<char> marks)
+        public static string RemoveMarksExtraSpaces(string input)
         {
             var result = new StringBuilder();
             var lastWasSpace = input[0] == 32;
@@ -216,6 +227,21 @@ namespace Homework1
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        //get features and their idf values from file
+        public static Dictionary<string, double> GetFeaturesIdf(string featureFile)
+        {
+            var rows = FileIO.ReadFile(featureFile);
+            var featuresIdf = new Dictionary<string, double>();
+            foreach (var row in rows)
+            {
+                var standardRow = Bow_tfidf.RemoveMarksExtraSpaces(row);
+                var words = standardRow.Split(' ');
+                if (words.Length > 1)
+                    featuresIdf.Add(words[0], double.Parse(words[1]));
+            }
+            return featuresIdf;
         }
     }
 }
