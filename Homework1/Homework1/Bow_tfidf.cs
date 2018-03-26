@@ -50,7 +50,7 @@ namespace Homework1
 
             
 
-            HashSet<string> stopWords = new HashSet<string>(FileIO.ReadFile(stopWordFile));
+            HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
             List<string> output = new List<string>();
             foreach (var row in input)
             {
@@ -93,14 +93,15 @@ namespace Homework1
         }
 
         //1412520
-        public static string RemoveMarksExtraSpaces(string input)
+        public static string RemoveMarksExtraSpaces(string input, HashSet<char> markss = null)
         {
             var result = new StringBuilder();
             var lastWasSpace = input[0] == 32;
+            var markList = markss ?? marks;
             for (int i = 0; i < input.Length; i++)
             {
                 var character = input[i];
-                if (marks.Contains(character))
+                if (markList.Contains(character))
                 {
                     if (!lastWasSpace)
                     {
@@ -236,7 +237,7 @@ namespace Homework1
             var featuresIdf = new Dictionary<string, double>();
             foreach (var row in rows)
             {
-                var standardRow = Bow_tfidf.RemoveMarksExtraSpaces(row);
+                var standardRow = Bow_tfidf.RemoveMarksExtraSpaces(row, new HashSet<char> { '!', '/', '-', '=', '~', '?', ':', ';', '\'', '"', '(', ')', '[', ']', '{', '}' });
                 var words = standardRow.Split(' ');
                 if (words.Length > 1)
                     featuresIdf.Add(words[0], double.Parse(words[1]));
