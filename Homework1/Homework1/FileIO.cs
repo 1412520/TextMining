@@ -34,6 +34,29 @@ namespace Homework1
             return list;
         }
 
+        public static HashSet<string> ReadFileIntoHashTable(string fileInput)
+        {
+            HashSet<string> list = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                using (StreamReader sr = new StreamReader(fileInput))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        list.Add(line);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+
+            return list;
+        }
+
         //1412543
         public static void WriteListToFile(List<String> list, string fileOutput)
         {
