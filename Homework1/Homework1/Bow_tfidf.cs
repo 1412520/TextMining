@@ -15,9 +15,9 @@ namespace Homework1
             Dictionary<string, double> featureList = new Dictionary<string, double>();
             int totalDocs = processText.Count;
             List<Document> processDocs = new List<Document>();
-            foreach (string item in processText)
+            foreach (string doc in processText)
             {
-                processDocs.Add(new Document(item));
+                processDocs.Add(new Document(doc));
             }
             foreach (string item0 in processText)
             {
@@ -163,7 +163,7 @@ namespace Homework1
 
         //1412542
         // Return tf_idf of a feature in a document
-        public static double CalculateTfidf(string feature, Document doc, int totalDocs, int num_DocsContainFeature)
+        public static double CalculateTfidf(string feature, double idf, Document doc)
         {
             if (!doc.Contains(feature))
                 return 0;
@@ -174,7 +174,7 @@ namespace Homework1
                 int freq, maxFreq;
                 freq = doc.getFrequency(feature);
                 maxFreq = doc.getMaxFrequency();
-                tf_idf = (1.0 * freq / maxFreq) * Math.Log10(1.0*totalDocs / num_DocsContainFeature);
+                tf_idf = (1.0 * freq / maxFreq) * idf;
             }
             catch (Exception ex)
             {
@@ -185,25 +185,26 @@ namespace Homework1
         }
 
         //1412542
-        public static void BoW_tfidf(string input, string output, string featureList, string roundFile)
+        public static void BoW_tfidf(string input, string output, string featureFile, string roundFile)
         {
             //List<List<double>> weight = new List<List<double>>();
             double[,] weight = null;
-            List<string> docList, wordList;
+            List<string> docList;
+            Dictionary<string, double> wordList = new Dictionary<string, double>();
             int round;
             try
             {
                 docList = FileIO.ReadFile(input);
-                wordList = FileIO.ReadFile(featureList);
                 round = Int16.Parse(FileIO.ReadFile(roundFile)[0]);
-
+                wordList = GetFeaturesIdf(featureFile);
+                
                 List<Document> docs = new List<Document>();
                 foreach (string doc in docList)
                 {
                     docs.Add(new Document(doc));
                 }
 
-                int totalDocs, numDocsContainFeature, numFeatures;
+                int totalDocs, numFeatures;
                 totalDocs = docList.Count;
                 numFeatures = wordList.Count;
 
@@ -213,8 +214,8 @@ namespace Homework1
                 {
                     for (int j = 0; j < numFeatures; j++)
                     {
-                        numDocsContainFeature = DocContainsFeature(wordList[j], docs);
-                        tfidf = CalculateTfidf(wordList[j], docs[i], totalDocs, numDocsContainFeature);
+                        //numDocsContainFeature = DocContainsFeature(wordList[j], docs);
+                        tfidf = CalculateTfidf(wordList.ElementAt(j).Key, wordList.ElementAt(j).Value, docs[i]);
                         weight[i, j] = Math.Round(tfidf, round, MidpointRounding.AwayFromZero);
                     }
                 }

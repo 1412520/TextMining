@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,6 +84,67 @@ namespace Homework1
                 rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 return rs;
             }
+        }
+
+        //1412542
+        public Dictionary<string, double> Search(string inputFile)
+        {
+            Dictionary<string, double> similarDocs = new Dictionary<string, double>();
+            try
+            {
+                // Read string and the number of documents that we need to search
+                List<string> inputs = FileIO.ReadFile(inputFile);
+                string searchString = inputs[0];
+                int numberOfDocs = int.Parse(inputs[1]);
+
+                // Read tf_idf
+                List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
+                List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
+                foreach(string doc in tf_idfList)
+                {
+                    string[] tfIdfDoc = doc.Split(' ');
+                    List<double> tf_idfs = new List<double>(tfIdfDoc.Count());
+                    foreach (string tfIdf in tfIdfDoc)
+                    {
+                        tf_idfs.Add(double.Parse(tfIdf));
+                    }
+                    vectorList.Add(new Vector(tf_idfs));
+                }
+
+                // Vectorise
+                Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
+
+                // Get documents that are similar to searchString
+                Dictionary<int, double> similarDocIndex = GetListSimilarityMeasure(vectorList, numberOfDocs);
+
+                using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
+                {
+                    String line;
+                    int index = 0;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (similarDocIndex.ContainsKey(index))
+                        {
+                            similarDocs.Add(line, similarDocIndex[index]);
+                            similarDocIndex.Remove(index);
+
+                            // Check if we got enough documents
+                            if (similarDocIndex.Count == 0)
+                                break;
+                        }
+                        ++index;
+                    }
+                }
+
+                // Order documents by similarity
+                similarDocs = similarDocs.OrderBy(key => key.Value).ToDictionary(x => x.Key, x => x.Value);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return similarDocs;
         }
     }
 }
