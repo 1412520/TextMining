@@ -38,7 +38,7 @@ namespace Homework1
             {
                 featureDocs.Add(item2.Key + ' ' + item2.Value);
             }
-            FileIO.WriteListToFile(featureDocs, outputFile);
+            FileIO.WriteFile(featureDocs, outputFile);
         }
 
         //1412520
@@ -220,7 +220,7 @@ namespace Homework1
                     }
                 }
 
-                FileIO.WriteMatrixToFile(weight, output);
+                FileIO.WriteFile(weight, output);
             }
 
             catch (Exception ex)
