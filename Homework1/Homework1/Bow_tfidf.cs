@@ -17,12 +17,13 @@ namespace Homework1
             List<Document> processDocs = new List<Document>();
             foreach (string doc in processText)
             {
-                processDocs.Add(new Document(doc));
+                if (!String.IsNullOrEmpty(doc))
+                    processDocs.Add(new Document(doc));
             }
-            foreach (string item0 in processText)
+            foreach (Document doc in processDocs)
             {
-                string[] arrListStr = item0.Split(' ');
-                foreach (string item1 in arrListStr)
+                //string[] arrListStr = item0.Split(' ');
+                foreach (string item1 in doc.getTermFreq().Keys)
                 {
                     bool isExists = featureList.ContainsKey(item1);
                     if (isExists == false)

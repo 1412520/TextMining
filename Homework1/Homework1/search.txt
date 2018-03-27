@@ -1,2 +1,2 @@
-I have a hat.
-3
+this is a hat
+8

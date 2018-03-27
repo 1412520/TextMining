@@ -50,6 +50,12 @@ namespace Homework1
         }
 
         //1412542
+        public Dictionary<string, int> getTermFreq()
+        {
+            return termFrequency;
+        }
+
+        //1412542
         public bool Contains(string word)
         {
             return termFrequency.ContainsKey(word);

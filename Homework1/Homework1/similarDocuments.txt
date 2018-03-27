@@ -1,3 +1,4 @@
-this is a hat. 0
- 0
-i'm chatting 0
+this is a hat. 2.99956639809862E-05
+ 0.301029995663981
+The hat is green. 0.602000000747292
+i am chatting 0.673069876230883
