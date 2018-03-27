@@ -36,7 +36,7 @@ namespace Homework1
 
             //  Search similar documents
             Vector str = new Vector();
-            Dictionary<string, double> similarDocs =  str.Search(searchFile);
+            Dictionary<string, double> similarDocs = str.Search(searchFile);
 
             // Wrire similar documents to file
             using (StreamWriter wr = new StreamWriter(similarDocFile))
@@ -46,8 +46,6 @@ namespace Homework1
                     wr.WriteLine(doc.Key + ' ' + doc.Value);
                 }
             }
-
-
         }
     }
 }

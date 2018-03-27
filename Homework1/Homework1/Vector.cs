@@ -22,6 +22,17 @@ namespace Homework1
             Value = new List<double>(value);
         }
 
+        public Vector(string vector)
+        {
+            Value = new List<double>();
+            var numbers = vector.TrimEnd().Split(' ');
+            foreach (var number in numbers)
+            {
+                Value.Add(double.Parse(number));
+            }
+            
+        }
+
         //vectorise input base on features and their idf in baseFile
         public Vector Vectorise(string input, string baseFile)
         {
@@ -100,22 +111,16 @@ namespace Homework1
                 // Read tf_idf
                 List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
                 List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
-                foreach(string doc in tf_idfList)
+                foreach (string doc in tf_idfList)
                 {
-                    string[] tfIdfDoc = doc.Split(' ');
-                    List<double> tf_idfs = new List<double>(tfIdfDoc.Count());
-                    foreach (string tfIdf in tfIdfDoc)
-                    {
-                        tf_idfs.Add(double.Parse(tfIdf));
-                    }
-                    vectorList.Add(new Vector(tf_idfs));
+                    vectorList.Add(new Vector(doc));
                 }
 
                 // Vectorise
                 Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
 
                 // Get documents that are similar to searchString
-                Dictionary<int, double> similarDocIndex = GetListSimilarityMeasure(vectorList, numberOfDocs);
+                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs);
 
                 using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
                 {
@@ -123,13 +128,13 @@ namespace Homework1
                     int index = 0;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (similarDocIndex.ContainsKey(index))
+                        if (indexesAndSimilarities.ContainsKey(index))
                         {
-                            similarDocs.Add(line, similarDocIndex[index]);
-                            similarDocIndex.Remove(index);
+                            similarDocs.Add(line, indexesAndSimilarities[index]);
+                            indexesAndSimilarities.Remove(index);
 
                             // Check if we got enough documents
-                            if (similarDocIndex.Count == 0)
+                            if (indexesAndSimilarities.Count == 0)
                                 break;
                         }
                         ++index;
