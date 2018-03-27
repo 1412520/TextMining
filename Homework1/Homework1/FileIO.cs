@@ -20,7 +20,6 @@ namespace Homework1
                     String line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (line != "")
                             list.Add(line);
                     }
                 } 
@@ -58,7 +57,36 @@ namespace Homework1
         }
 
         //1412543
-        public static void WriteListToFile(List<String> list, string fileOutput)
+        //Đọc từng dòng của file
+        public static String ReadFile(List<string> list, string fileInput)
+        {
+            String str = null;
+            try
+            {
+                using (StreamReader sr = new StreamReader(fileInput))
+                {
+                    String line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (!list.Contains(line) && line != "")
+                        {
+                            str = line;
+                            break;
+                        }  
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+
+            return str;
+        }
+
+        //1412543
+        public static void WriteFile(List<String> list, string fileOutput)
         {
             using (StreamWriter wr = new StreamWriter(fileOutput))
             {
@@ -70,7 +98,7 @@ namespace Homework1
         }
 
         //1412543
-        public static void WriteMatrixToFile (double[,] matrix, string fileOutput)
+        public static void WriteFile (double[,] matrix, string fileOutput)
         {
             using (StreamWriter wr = new StreamWriter(fileOutput)) 
             {
@@ -80,6 +108,16 @@ namespace Homework1
                         wr.Write(matrix[i, j] + " ");
                     wr.WriteLine();
                 }  
+            }
+        }
+
+        //1412543
+        //Ghi từng chuỗi tiếp tục vào file
+        public static void WriteFile(String s, string fileOutput)
+        {
+            using (StreamWriter wr = new StreamWriter(fileOutput, true))
+            {
+                wr.WriteLine(s);
             }
         }
 
