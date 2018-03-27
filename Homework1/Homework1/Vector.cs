@@ -102,7 +102,7 @@ namespace Homework1
                 List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
                 foreach(string doc in tf_idfList)
                 {
-                    string[] tfIdfDoc = doc.Split(' ');
+                    string[] tfIdfDoc = doc.Trim().Split(' ');
                     List<double> tf_idfs = new List<double>(tfIdfDoc.Count());
                     foreach (string tfIdf in tfIdfDoc)
                     {

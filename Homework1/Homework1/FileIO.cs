@@ -20,7 +20,6 @@ namespace Homework1
                     String line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (line != "")
                             list.Add(line);
                     }
                 } 
