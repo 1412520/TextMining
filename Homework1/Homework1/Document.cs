@@ -20,7 +20,7 @@ namespace Homework1
         public Document(String _doc) 
         {
             maxFreq = 1;
-
+            Text = _doc;
             string[] splitDoc = _doc.Split(' ');
             termFrequency = new Dictionary<string, int>();
             for (int i = 0; i < splitDoc.Count(); i++)
