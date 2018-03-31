@@ -45,7 +45,7 @@ namespace Homework1
             var standardInput = StringHelper.StandardizeString(input, stopWords);
             if (string.IsNullOrEmpty(standardInput))
                 return null;    //invalid input
-            var result = VectorizeStandardInput(standardInput, baseFile);
+            var result = VectoriseStandardInput(standardInput, baseFile);
             return result;
         }
 
@@ -57,6 +57,7 @@ namespace Homework1
             {
                 var features = featuresIdf.Keys.ToArray();
                 var document = new Document(standardInput);
+                result.TextValue = document;
                 foreach (var feature in features)
                 {
                     if (document.Contains(feature))
