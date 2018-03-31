@@ -11,6 +11,7 @@ namespace Homework1
         //1412503
         private Dictionary<String, int> termFrequency;
         private int maxFreq;
+        public string Text { get; set; }
 
         //1412503
         public Document() { }
@@ -59,6 +60,27 @@ namespace Homework1
         public bool Contains(string word)
         {
             return termFrequency.ContainsKey(word);
+        }
+
+        //1412542
+        // Return the number of documents contain the feature
+        public static int DocContainsFeature(string feature, List<Document> docList)
+        {
+            int quantity = 0;
+            try
+            {
+                foreach (Document doc in docList)
+                {
+                    if (doc.Contains(feature))
+                        quantity++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return quantity;
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Homework1
     public class Vector
     {
         public List<double> Value { get; set; }
+        public Document TextValue { get; set; }
+        public string ValueType { get; set; }
 
         public Vector()
         {
@@ -40,7 +42,7 @@ namespace Homework1
             if (string.IsNullOrEmpty(input))
                 return null;
             HashSet<string> stopWords = new HashSet<string>(FileIO.ReadFile(ConfigurationManager.AppSettings.Get("StopWordFile")));
-            var standardInput = Bow_tfidf.StandardizeString(input, stopWords);
+            var standardInput = StringHelper.StandardizeString(input, stopWords);
             if (string.IsNullOrEmpty(standardInput))
                 return null;    //invalid input
             var result = new Vector();
