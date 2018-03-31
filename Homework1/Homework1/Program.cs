@@ -35,8 +35,7 @@ namespace Homework1
             Bow_tfidf.BoW_tfidf(processedTextFile, outputFile, featureFile, roundFile);
 
             //  Search similar documents
-            Vector str = new Vector();
-            var similarDocs = str.Search(searchFile);
+            var similarDocs = Vector.Search(searchFile);
 
             // Wrire similar documents to file
             using (StreamWriter wr = new StreamWriter(similarDocFile))

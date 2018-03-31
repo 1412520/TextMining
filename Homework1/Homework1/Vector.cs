@@ -36,15 +36,22 @@ namespace Homework1
         }
 
         //vectorise input base on features and their idf in baseFile
-        public Vector Vectorise(string input, string baseFile)
+        public static Vector Vectorise(string input, string baseFile)
         {
-            var featuresIdf = Bow_tfidf.GetFeaturesIdf(baseFile);
+            
             if (string.IsNullOrEmpty(input))
                 return null;
             HashSet<string> stopWords = new HashSet<string>(FileIO.ReadFile(ConfigurationManager.AppSettings.Get("StopWordFile")));
             var standardInput = StringHelper.StandardizeString(input, stopWords);
             if (string.IsNullOrEmpty(standardInput))
                 return null;    //invalid input
+            var result = VectorizeStandardInput(standardInput, baseFile);
+            return result;
+        }
+
+        public static Vector VectoriseStandardInput(string standardInput, string baseFile)
+        {
+            var featuresIdf = Bow_tfidf.GetFeaturesIdf(baseFile);
             var result = new Vector();
             if (featuresIdf.Count > 0)
             {
@@ -63,7 +70,6 @@ namespace Homework1
             }
             return result;
         }
-
 
         public double GetSimilarityMeasure(Vector vector)
         {
@@ -100,7 +106,7 @@ namespace Homework1
         }
 
         //1412542
-        public List<KeyValuePair<string, double>> Search(string inputFile)
+        public static List<KeyValuePair<string, double>> Search(string inputFile)
         {
             //Dictionary<string, double> similarDocs = new Dictionary<string, double>();
             List<KeyValuePair<string, double>> similarDocs = new List<KeyValuePair<string, double>>();
