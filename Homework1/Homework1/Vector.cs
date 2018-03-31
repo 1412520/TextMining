@@ -98,9 +98,10 @@ namespace Homework1
         }
 
         //1412542
-        public Dictionary<string, double> Search(string inputFile)
+        public List<KeyValuePair<string, double>> Search(string inputFile)
         {
-            Dictionary<string, double> similarDocs = new Dictionary<string, double>();
+            //Dictionary<string, double> similarDocs = new Dictionary<string, double>();
+            List<KeyValuePair<string, double>> similarDocs = new List<KeyValuePair<string, double>>();
             try
             {
                 // Read string and the number of documents that we need to search
@@ -130,7 +131,7 @@ namespace Homework1
                     {
                         if (indexesAndSimilarities.ContainsKey(index))
                         {
-                            similarDocs.Add(line, indexesAndSimilarities[index]);
+                            similarDocs.Add(new KeyValuePair<string, double>(line, indexesAndSimilarities[index]));
                             indexesAndSimilarities.Remove(index);
 
                             // Check if we got enough documents
@@ -142,7 +143,7 @@ namespace Homework1
                 }
 
                 // Order documents by similarity
-                similarDocs = similarDocs.OrderBy(key => key.Value).ToDictionary(x => x.Key, x => x.Value);
+                similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
             }
             catch(Exception ex)
             {
