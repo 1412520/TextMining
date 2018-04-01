@@ -1,0 +1,9 @@
+text1 - a b d
+text1 - e d
+text1 - c a
+text2 - t f a
+text2 - l a r
+text2 - d g
+text3 - o p u
+text3 - e l l
+text3 - a k m
