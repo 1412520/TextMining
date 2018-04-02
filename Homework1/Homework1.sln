@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework1", "Homework1\Homework1.csproj", "{10175ED3-F7BD-4426-8B11-F092B0034AB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classification", "Classification\Classification.csproj", "{92A7D082-C59F-45AE-B8A8-F71D41FC3559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{10175ED3-F7BD-4426-8B11-F092B0034AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10175ED3-F7BD-4426-8B11-F092B0034AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10175ED3-F7BD-4426-8B11-F092B0034AB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92A7D082-C59F-45AE-B8A8-F71D41FC3559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A7D082-C59F-45AE-B8A8-F71D41FC3559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A7D082-C59F-45AE-B8A8-F71D41FC3559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A7D082-C59F-45AE-B8A8-F71D41FC3559}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
