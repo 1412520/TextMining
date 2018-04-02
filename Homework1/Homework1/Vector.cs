@@ -72,7 +72,7 @@ namespace Homework1
             return result;
         }
 
-        public double GetSimilarityMeasure(Vector vector)
+        public double getEuclidSimilarity(Vector vector)
         {
             if (Value.Count != vector.Value.Count)
                 return 0;
@@ -84,7 +84,31 @@ namespace Homework1
             return Math.Sqrt(squareSum);
         }
 
-        public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity)
+        public double getCosinSimilarity(Vector vector)
+        {
+            if (Value.Count != vector.Value.Count)
+                return 0;
+            double dot = 0, mag1 = 0, mag2 = 0;
+
+            for (int i = 0; i < Value.Count; i++)
+            {
+                dot += Value[i] * vector.Value[i];
+                mag1 += Math.Pow(Value[i], 2);
+                mag2 += Math.Pow(vector.Value[i], 2);
+            }
+
+            if (mag1 == 0 || mag2 == 0)
+                return 0;
+            else
+                return (1.0 * dot) / (Math.Sqrt(mag1) * Math.Sqrt(mag2)); 
+        }
+
+        public double GetSimilarityMeasure(Vector vector, Func<Vector, double> funcName)
+        {
+            return funcName(vector);
+        }
+
+        public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity, string similarityName)
         {
             if(quantity <= 0)
             {
@@ -97,11 +121,23 @@ namespace Homework1
                     quantity = listV.Count;
                 }
                 Dictionary<int, double> rs = new Dictionary<int, double>(listV.Count);
-                for (int i = 0; i < listV.Count(); i++)
+                if (similarityName == "Euclid")
                 {
-                    rs.Add(i, GetSimilarityMeasure(listV[i]));
+                    for (int i = 0; i < listV.Count(); i++)
+                        rs.Add(i, getEuclidSimilarity(listV[i]));
+
+                    rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
-                rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
+                else if (similarityName == "Cosine")
+                {
+                    for (int i = 0; i < listV.Count(); i++)
+                        rs.Add(i, getCosinSimilarity(listV[i]));
+
+                    rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
+                }
+                else
+                    Console.WriteLine("Similarity name is invalid!");
+
                 return rs;
             }
         }
@@ -117,6 +153,7 @@ namespace Homework1
                 List<string> inputs = FileIO.ReadFile(inputFile);
                 string searchString = inputs[0];
                 int numberOfDocs = int.Parse(inputs[1]);
+                string similarityName = inputs[2];
 
                 // Read tf_idf
                 List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
@@ -130,7 +167,7 @@ namespace Homework1
                 Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
 
                 // Get documents that are similar to searchString
-                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs);
+                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs, similarityName);
 
                 using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
                 {
@@ -152,7 +189,10 @@ namespace Homework1
                 }
 
                 // Order documents by similarity
-                similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
+                if (similarityName == "Euclid")
+                    similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
+                else
+                    similarDocs = similarDocs.OrderByDescending(x => x.Value).ToList();
             }
             catch(Exception ex)
             {
