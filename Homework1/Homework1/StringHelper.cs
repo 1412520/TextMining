@@ -85,25 +85,45 @@ namespace Homework1
             return result.ToString().TrimEnd();
         }
 
-        
+
 
         //1412520
-        public static List<string> ReproduceText(List<string> input, string stopWordFile)
+        //public static List<string> ReproduceText(List<string> input, string stopWordFile)
+        //{
+        //    HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
+        //    List<string> output = new List<string>();
+        //    for (int i = 0; i < input.Count; i++)
+        //    {
+        //        var row = input[i];
+        //        if (string.IsNullOrEmpty(row))
+        //        {
+        //            output.Add(row);
+        //            continue;
+        //        }
+
+        //        var outputRow = StandardizeString(row, stopWords);
+        //        output.Add(outputRow);
+        //    }
+
+        //    return output;
+        //}
+
+        public static List<string> ReproduceText(List<Vector> input, string stopWordFile)
         {
-
-
-
             HashSet<string> stopWords = FileIO.ReadFileIntoHashTable(stopWordFile);
             List<string> output = new List<string>();
-            foreach (var row in input)
+            for (int i = 0; i < input.Count; i++)
             {
+                var row = input[i].TextValue.RawText;
                 if (string.IsNullOrEmpty(row))
                 {
                     output.Add(row);
+                    input[i].TextValue.Text = row;
                     continue;
                 }
 
                 var outputRow = StandardizeString(row, stopWords);
+                input[i].TextValue.Text = outputRow;
                 output.Add(outputRow);
             }
 

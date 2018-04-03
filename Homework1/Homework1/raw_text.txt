@@ -1,4 +1,4 @@
-this is a hat.
-
-i am chatting
-The hat is green.
+text1 - this is a hat.
+text2 - 
+text2 - i am chatting
+text1 - The hat is green.

@@ -24,6 +24,13 @@ namespace Homework1
             Value = new List<double>(value);
         }
 
+        public Vector(Vector vector)
+        {
+            Value = new List<double>(vector.Value);
+            TextValue = new Document(vector.TextValue);
+            ValueType = string.Copy(vector.ValueType);
+        }
+
         public Vector(string vector)
         {
             Value = new List<double>();
@@ -36,7 +43,7 @@ namespace Homework1
         }
 
         //vectorise input base on features and their idf in baseFile
-        public static Vector Vectorise(string input, string baseFile)
+        public static Vector Vectorise(string input, string featureFile)
         {
             
             if (string.IsNullOrEmpty(input))
@@ -45,28 +52,32 @@ namespace Homework1
             var standardInput = StringHelper.StandardizeString(input, stopWords);
             if (string.IsNullOrEmpty(standardInput))
                 return null;    //invalid input
-            var result = VectoriseStandardInput(standardInput, baseFile);
+            var result = new Vector {
+                TextValue = new Document {
+                    RawText = input,
+                    Text = standardInput
+                },
+                Value = VectoriseStandardInput(standardInput, featureFile) };
             return result;
         }
 
-        public static Vector VectoriseStandardInput(string standardInput, string baseFile)
+        public static List<double> VectoriseStandardInput(string standardInput, string featureFile)
         {
-            var featuresIdf = Bow_tfidf.GetFeaturesIdf(baseFile);
-            var result = new Vector();
+            var featuresIdf = Bow_tfidf.GetFeaturesIdf(featureFile);
+            var result = new List<double>();
             if (featuresIdf.Count > 0)
             {
                 var features = featuresIdf.Keys.ToArray();
                 var document = new Document(standardInput);
-                result.TextValue = document;
                 foreach (var feature in features)
                 {
                     if (document.Contains(feature))
                     {
                         var tf_idf = 1.0 * document.getFrequency(feature) / document.getMaxFrequency() * featuresIdf[feature];
-                        result.Value.Add(tf_idf);
+                        result.Add(tf_idf);
                     }
                     else
-                        result.Value.Add(0);
+                        result.Add(0);
                 }
             }
             return result;

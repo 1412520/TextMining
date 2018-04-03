@@ -110,6 +110,8 @@ namespace Homework1
             }
         }
 
+
+
         //get features and their idf values from file
         public static Dictionary<string, double> GetFeaturesIdf(string featureFile)
         {
@@ -123,6 +125,18 @@ namespace Homework1
                     featuresIdf.Add(words[0], double.Parse(words[1]));
             }
             return featuresIdf;
+        }
+
+        public static List<Vector> tf_idf(List<Vector> vectors, string featureFile)
+        {
+            var result = new List<Vector>();
+            foreach (var vector in vectors)
+            {
+                var item = new Vector(vector);
+                item.Value = Vector.VectoriseStandardInput(vector.TextValue.Text, featureFile);
+                result.Add(item);
+            }
+            return result;
         }
     }
 }
