@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Homework1
 {
-    public class FileIO
+    class FileIO
     {
         //1412543
         public static List<string> ReadFile(string fileInput)
