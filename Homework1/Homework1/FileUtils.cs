@@ -7,9 +7,9 @@ using System.IO;
 using Homework1;
 using System.Configuration;
 
-namespace _1412503_test
+namespace Homework1
 {
-    class FileUtils
+    public class FileUtils
     {
         public static void preprocessDirectory(string path, string outputFile)
         {

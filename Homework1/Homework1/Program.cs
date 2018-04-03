@@ -35,7 +35,7 @@ namespace Homework1
 
             // Calculate tf_idf
             Bow_tfidf.BoW_tfidf(processedTextFile, outputFile, featureFile, roundFile);
-            var result = Bow_tfidf.tf_idf(vectors, featureFile);
+            //var result = Bow_tfidf.tf_idf(vectors, featureFile);
 
             //  Search similar documents
             var similarDocs = Vector.Search(searchFile);

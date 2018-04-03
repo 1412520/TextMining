@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Homework1
 {
-    class Bow_tfidf
+    public class Bow_tfidf
     {
         //1412595
         public static void CreateFeatureList(string inputFile, string outputFile)
@@ -137,6 +138,23 @@ namespace Homework1
                 result.Add(item);
             }
             return result;
+        }
+
+        public static void GenerateTFIDFMatrix(string inputFile, string processedFile, string featureFile, string outputFile)
+        {
+            // Pre-processing text
+            var vectors = new List<Vector>();
+            bool hasValueType = true;
+            List<string> input = FileIO.ReadFileIntoVector(inputFile, out vectors, hasValueType);
+            var output = StringHelper.ReproduceText(vectors, ConfigurationManager.AppSettings.Get("StopWordFile"));
+            FileIO.WriteFile(output, processedFile);
+
+            // Extract features
+            Bow_tfidf.CreateFeatureList(processedFile, featureFile);
+
+            // Calculate tf_idf
+            Bow_tfidf.BoW_tfidf(processedFile, outputFile, featureFile, ConfigurationManager.AppSettings.Get("RoundFile"));
+            //var result = Bow_tfidf.tf_idf(vectors, featureFile);
         }
     }
 }
