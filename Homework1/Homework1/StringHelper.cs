@@ -130,5 +130,13 @@ namespace Homework1
             return output;
         }
 
+        // 1412542
+        // Get label of Document with format "label - content"
+        public static string getLabel(string doc)
+        {
+            int indexDash = doc.IndexOf('-');
+            return doc.Substring(0, indexDash - 1);
+        }
+
     }
 }
