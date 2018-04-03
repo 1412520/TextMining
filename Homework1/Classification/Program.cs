@@ -44,11 +44,14 @@ namespace Classification
 
         static void Main(string[] args)
         {
-            string inputFile = "../../test.txt";
-            string tfidfFile = "../../../Homework1/output.txt";
-            string featureFile = "../../../Homework1/featureList.txt";
-            string rawFile = "../../../Homework1/raw_text.txt";
-            string classifiedFile = "../../classifiedFile";
+            string inputFile = "../../test/test.txt";
+            string tfidfFile = "../../training/tf_idf.txt";
+            string featureFile = "../../training/features.txt";
+            string rawFile = "../../training/raw_text.txt";
+            string classifiedFile = "../../test/classified-file";
+
+            FileUtils.preprocessDirectory("../../training", "../../training/raw_text.txt");
+            Bow_tfidf.GenerateTFIDFMatrix("../../training/raw_text.txt", "../../training/processed.txt", "../../training/features.txt", "../../training/tf_idf.txt");
 
             // Read string and the number of documents that we need to search
             List<string> inputs = FileIO.ReadFile(inputFile);
@@ -82,8 +85,7 @@ namespace Classification
             }
 
             FileIO.WriteFile(labeledString, classifiedFile);
-            FileUtils.preprocessDirectory("../../training", "../../training/raw_text.txt");
-            Bow_tfidf.GenerateTFIDFMatrix("../../training/raw_text.txt", "../../training/processed.txt", "../../training/features.txt", "../../training/tf_idf.txt");
+            
         }
     }
 }
