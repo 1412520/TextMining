@@ -152,52 +152,65 @@ namespace Homework1
                 return rs;
             }
         }
-        
-        //1412542
-        public static string Search(string searchString, int numberOfDocs, string similarityName, List<Vector> tfidf_Vector)
-        {
-            // Read tf_idf file
 
-            string labelOfSearchString = null;
+        //1412542
+        public static List<KeyValuePair<string, double>> Search(string inputFile)
+        {
+            //Dictionary<string, double> similarDocs = new Dictionary<string, double>();
+            List<KeyValuePair<string, double>> similarDocs = new List<KeyValuePair<string, double>>();
             try
             {
-                List<KeyValuePair<string, string>> similarDocs = new List<KeyValuePair<string, string>>();
+                // Read string and the number of documents that we need to search
+                List<string> inputs = FileIO.ReadFile(inputFile);
+                string searchString = inputs[0];
+                int numberOfDocs = int.Parse(inputs[1]);
+                string similarityName = inputs[2];
 
-                // Vectorise, calculate tf_idf
+                // Read tf_idf
+                List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
+                List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
+                foreach (string doc in tf_idfList)
+                {
+                    vectorList.Add(new Vector(doc));
+                }
+
+                // Vectorise
                 Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
 
                 // Get documents that are similar to searchString
-                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(tfidf_Vector, numberOfDocs, similarityName);
+                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs, similarityName);
 
-                int index = 0;
-                while (indexesAndSimilarities.Count != 0 || index == tfidf_Vector.Count)
+                using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
                 {
-                    if (indexesAndSimilarities.ContainsKey(index))
+                    String line;
+                    int index = 0;
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        similarDocs.Add(new KeyValuePair<string, string>(tfidf_Vector[index].TextValue.RawText, tfidf_Vector[index].ValueType));
-                        indexesAndSimilarities.Remove(index);
+                        if (indexesAndSimilarities.ContainsKey(index))
+                        {
+                            similarDocs.Add(new KeyValuePair<string, double>(line, indexesAndSimilarities[index]));
+                            indexesAndSimilarities.Remove(index);
+
+                            // Check if we got enough documents
+                            if (indexesAndSimilarities.Count == 0)
+                                break;
+                        }
+                        ++index;
                     }
-                    ++index;
                 }
 
-                Dictionary<string, int> labelFreq = new Dictionary<string, int>();
- 
-                foreach(var doc in similarDocs)
-                {
-                    if (labelFreq.Keys.Contains(doc.Value))
-                        ++labelFreq[doc.Value];
-                    else
-                        labelFreq.Add(doc.Value, 1);
-                }
-
-                labelOfSearchString = labelFreq.FirstOrDefault(x => x.Value == labelFreq.Values.Max()).Key;
+                // Order documents by similarity
+                if (similarityName == "Euclid")
+                    similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
+                else
+                    similarDocs = similarDocs.OrderByDescending(x => x.Value).ToList();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return labelOfSearchString;
+            return similarDocs;
         }
     }
 }

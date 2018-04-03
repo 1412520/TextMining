@@ -1,5 +1,5 @@
-text1 - a b -d
-text1 - e - d
+text1 - a b d
+text1 - e d
 text1 - c a
 text2 - t f a
 text2 - l a r

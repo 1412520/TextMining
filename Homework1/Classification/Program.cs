@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 using Homework1;
 using System.IO;
+=======
+>>>>>>> fca702c353ee311ad0ee1f5f0a532d5b7687c400
 
 namespace Classification
 {
@@ -41,6 +44,7 @@ namespace Classification
 
         static void Main(string[] args)
         {
+<<<<<<< HEAD
             string inputFile = "../../test.txt";
             string tfidfFile = "../../../Homework1/output.txt";
             string featureFile = "../../../Homework1/featureList.txt";
@@ -79,6 +83,8 @@ namespace Classification
             }
 
             FileIO.WriteFile(labeledString, classifiedFile);
+=======
+>>>>>>> fca702c353ee311ad0ee1f5f0a532d5b7687c400
         }
     }
 }
