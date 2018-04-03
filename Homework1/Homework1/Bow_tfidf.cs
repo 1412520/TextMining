@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +71,6 @@ namespace Homework1
         public static void BoW_tfidf(string input, string output, string featureFile, string roundFile)
         {
             //List<List<double>> weight = new List<List<double>>();
-            double[,] weight = null;
             List<string> docList;
             Dictionary<string, double> wordList = new Dictionary<string, double>();
             int round;
@@ -79,6 +79,8 @@ namespace Homework1
                 docList = FileIO.ReadFile(input);
                 round = Int16.Parse(FileIO.ReadFile(roundFile)[0]);
                 wordList = GetFeaturesIdf(featureFile);
+                if (File.Exists(output))
+                    File.Delete(output);
                 for (int i =0; i<docList.Count; i++)
                 {
                     var vector = Vector.VectoriseInput(docList[i], wordList);

@@ -74,22 +74,7 @@ namespace Homework1
         public static List<double> VectoriseStandardInput(string standardInput, string featureFile)
         {
             var featuresIdf = Bow_tfidf.GetFeaturesIdf(featureFile);
-            var result = new List<double>();
-            if (featuresIdf.Count > 0)
-            {
-                var features = featuresIdf.Keys.ToArray();
-                var document = new Document(standardInput);
-                foreach (var feature in features)
-                {
-                    if (document.Contains(feature))
-                    {
-                        var tf_idf = 1.0 * document.getFrequency(feature) / document.getMaxFrequency() * featuresIdf[feature];
-                        result.Add(tf_idf);
-                    }
-                    else
-                        result.Add(0);
-                }
-            }
+            var result = VectoriseInput(standardInput, featuresIdf);
             return result;
         }
 
