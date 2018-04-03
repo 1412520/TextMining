@@ -79,30 +79,13 @@ namespace Homework1
                 docList = FileIO.ReadFile(input);
                 round = Int16.Parse(FileIO.ReadFile(roundFile)[0]);
                 wordList = GetFeaturesIdf(featureFile);
+                for (int i =0; i<docList.Count; i++)
+                {
+                    var vector = Vector.VectoriseInput(docList[i], wordList);
+                    FileIO.WriteLine(Vector.GetValue(vector), output);
+                }
                 
-                List<Document> docs = new List<Document>();
-                foreach (string doc in docList)
-                {
-                    docs.Add(new Document(doc));
-                }
 
-                int totalDocs, numFeatures;
-                totalDocs = docList.Count;
-                numFeatures = wordList.Count;
-
-                weight = new double[totalDocs, numFeatures];
-                double tfidf;
-                for (int i = 0; i < totalDocs; i++)
-                {
-                    for (int j = 0; j < numFeatures; j++)
-                    {
-                        //numDocsContainFeature = DocContainsFeature(wordList[j], docs);
-                        tfidf = CalculateTfidf(wordList.ElementAt(j).Key, wordList.ElementAt(j).Value, docs[i]);
-                        weight[i, j] = Math.Round(tfidf, round, MidpointRounding.AwayFromZero);
-                    }
-                }
-
-                FileIO.WriteFile(weight, output);
             }
 
             catch (Exception ex)

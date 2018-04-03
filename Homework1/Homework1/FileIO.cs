@@ -102,7 +102,7 @@ namespace Homework1
             for (int i = 0; i < fileContent.Count; i++)
             {
                 var indexOfDash = fileContent[i].IndexOf('-');
-                var type = hasValueType ? fileContent[i].Substring(0, indexOfDash).TrimEnd() : null;
+                var type = hasValueType && (indexOfDash != -1) ? fileContent[i].Substring(0, indexOfDash).TrimEnd() : null;
                 var rawText = fileContent[i].Substring(indexOfDash + 1).Trim();
                 result.Add(rawText);
                 output.Add(new Vector

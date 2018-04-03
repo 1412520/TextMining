@@ -42,6 +42,16 @@ namespace Homework1
             
         }
 
+        public static string GetValue(List<double> values)
+        {
+            string result = "";
+            foreach(var val in values)
+            {
+                result += val + " ";
+            }
+            return result;
+        }
+
         //vectorise input base on features and their idf in baseFile
         public static Vector Vectorise(string input, string featureFile)
         {
@@ -64,6 +74,28 @@ namespace Homework1
         public static List<double> VectoriseStandardInput(string standardInput, string featureFile)
         {
             var featuresIdf = Bow_tfidf.GetFeaturesIdf(featureFile);
+            var result = new List<double>();
+            if (featuresIdf.Count > 0)
+            {
+                var features = featuresIdf.Keys.ToArray();
+                var document = new Document(standardInput);
+                foreach (var feature in features)
+                {
+                    if (document.Contains(feature))
+                    {
+                        var tf_idf = 1.0 * document.getFrequency(feature) / document.getMaxFrequency() * featuresIdf[feature];
+                        result.Add(tf_idf);
+                    }
+                    else
+                        result.Add(0);
+                }
+            }
+            return result;
+        }
+
+        public static List<double> VectoriseInput(string standardInput, Dictionary<string, double> featuresIdf)
+        {
+            //var featuresIdf = Bow_tfidf.GetFeaturesIdf(featureFile);
             var result = new List<double>();
             if (featuresIdf.Count > 0)
             {
