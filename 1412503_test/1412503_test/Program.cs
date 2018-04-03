@@ -15,10 +15,10 @@ namespace _1412503_test
             //Bow_tfidf.BoW_tfidf("../../outputFile/ouputFileTotal.txt", "../../outputFile/Bow_tfidf.txt", "../../outputFile/featureList.txt", "../../inputFile/round.txt", "../../inputFile/stop-words.txt");
 
             List<Vector> test = Vector.VectoriseStandardInputFile("../../outputFile/ouputFileTotal.txt", "../../outputFile/featureList.txt", "../../inputFile/stop-words.txt");
-            
+
             //foreach (var item in test)
             //{
-            //     Console.WriteLine(item.TextValue.Text);
+            //    Console.WriteLine(item.TextValue.Text);
             //    foreach (var item1 in item.Value)
             //    {
             //        Console.WriteLine(item1);
