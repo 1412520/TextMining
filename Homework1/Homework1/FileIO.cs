@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Homework1
 {
-    class FileIO
+    public class FileIO
     {
         //1412543
         public static List<string> ReadFile(string fileInput)
@@ -93,5 +93,30 @@ namespace Homework1
             }
         }
 
+        //doc va dua file vao Vector
+        public static List<string> ReadFileIntoVector(string inputFile, out List<Vector> output, bool hasValueType = false)
+        {
+            List<string> fileContent = FileIO.ReadFile(inputFile);
+            var result = new List<string>();
+            output = new List<Vector>();
+            for (int i = 0; i < fileContent.Count; i++)
+            {
+                var indexOfDash = fileContent[i].IndexOf('-');
+                var type = hasValueType ? fileContent[i].Substring(0, indexOfDash).TrimEnd() : null;
+                var rawText = fileContent[i].Substring(indexOfDash + 1).Trim();
+                result.Add(rawText);
+                output.Add(new Vector
+                {
+                    TextValue = new Document
+                    {
+                        RawText = rawText
+
+                    },
+                    ValueType = type
+                });
+            }
+            return result;
+        }
     }
+
 }

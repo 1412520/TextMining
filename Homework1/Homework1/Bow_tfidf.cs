@@ -28,7 +28,7 @@ namespace Homework1
                     bool isExists = featureList.ContainsKey(item1);
                     if (isExists == false)
                     {
-                        int quantity = Document.DocContainsFeature(item1, processDocs); 
+                        int quantity = Document.DocContainsFeature(item1, processDocs);
                         double idf = Math.Log10(1.0 * totalDocs / quantity);
                         featureList.Add(item1, idf);
                     }
@@ -50,7 +50,7 @@ namespace Homework1
                 return 0;
 
             double tf_idf = 0;
-            try 
+            try
             {
                 int freq, maxFreq;
                 freq = doc.getFrequency(feature);
@@ -78,7 +78,7 @@ namespace Homework1
                 docList = FileIO.ReadFile(input);
                 round = Int16.Parse(FileIO.ReadFile(roundFile)[0]);
                 wordList = GetFeaturesIdf(featureFile);
-                
+
                 List<Document> docs = new List<Document>();
                 foreach (string doc in docList)
                 {
@@ -110,6 +110,8 @@ namespace Homework1
             }
         }
 
+
+
         //get features and their idf values from file
         public static Dictionary<string, double> GetFeaturesIdf(string featureFile)
         {
@@ -123,6 +125,28 @@ namespace Homework1
                     featuresIdf.Add(words[0], double.Parse(words[1]));
             }
             return featuresIdf;
+        }
+
+        /*
+        public static List<Vector> tf_idf(List<Vector> vectors, string featureFile)
+        {
+            var result = new List<Vector>();
+            foreach (var vector in vectors)
+            {
+                var item = new Vector(vector);
+                item.Value = Vector.VectoriseStandardInput(vector.TextValue.Text, featureFile);
+                result.Add(item);
+            }
+            return result;
+        }*/
+
+        //1412542
+        public static void tf_idf(ref List<Vector> vectors, string featureFile)
+        {
+            foreach (var vector in vectors)
+            {
+                vector.Value = Vector.VectoriseStandardInput(vector.TextValue.Text, featureFile);
+            }
         }
     }
 }

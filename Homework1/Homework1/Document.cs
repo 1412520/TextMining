@@ -12,15 +12,21 @@ namespace Homework1
         private Dictionary<String, int> termFrequency;
         private int maxFreq;
         public string Text { get; set; }
+        public string RawText { get; set; }
 
         //1412503
         public Document() { }
+
+        public Document(Document doc)
+        {
+            Text = new StringBuilder(doc.Text).ToString();
+            RawText = new StringBuilder(doc.RawText).ToString();
+        }
 
         //1412503
         public Document(String _doc) 
         {
             maxFreq = 1;
-            Text = _doc;
             string[] splitDoc = _doc.Split(' ');
             termFrequency = new Dictionary<string, int>();
             for (int i = 0; i < splitDoc.Count(); i++)
@@ -31,12 +37,13 @@ namespace Homework1
                     termFrequency.Add(splitDoc[i], 1);
             }
 
-            foreach(int freq in termFrequency.Values)
+            foreach (int freq in termFrequency.Values)
             {
                 if (freq > maxFreq)
                     maxFreq = freq;
             }
         }
+
 
         //1412503
         public int getFrequency(string word)

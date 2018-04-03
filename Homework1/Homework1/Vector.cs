@@ -24,6 +24,13 @@ namespace Homework1
             Value = new List<double>(value);
         }
 
+        public Vector(Vector vector)
+        {
+            Value = new List<double>(vector.Value);
+            TextValue = new Document(vector.TextValue);
+            ValueType = string.Copy(vector.ValueType);
+        }
+
         public Vector(string vector)
         {
             Value = new List<double>();
@@ -36,7 +43,7 @@ namespace Homework1
         }
 
         //vectorise input base on features and their idf in baseFile
-        public static Vector Vectorise(string input, string baseFile)
+        public static Vector Vectorise(string input, string featureFile)
         {
             
             if (string.IsNullOrEmpty(input))
@@ -45,28 +52,32 @@ namespace Homework1
             var standardInput = StringHelper.StandardizeString(input, stopWords);
             if (string.IsNullOrEmpty(standardInput))
                 return null;    //invalid input
-            var result = VectoriseStandardInput(standardInput, baseFile);
+            var result = new Vector {
+                TextValue = new Document {
+                    RawText = input,
+                    Text = standardInput
+                },
+                Value = VectoriseStandardInput(standardInput, featureFile) };
             return result;
         }
 
-        public static Vector VectoriseStandardInput(string standardInput, string baseFile)
+        public static List<double> VectoriseStandardInput(string standardInput, string featureFile)
         {
-            var featuresIdf = Bow_tfidf.GetFeaturesIdf(baseFile);
-            var result = new Vector();
+            var featuresIdf = Bow_tfidf.GetFeaturesIdf(featureFile);
+            var result = new List<double>();
             if (featuresIdf.Count > 0)
             {
                 var features = featuresIdf.Keys.ToArray();
                 var document = new Document(standardInput);
-                result.TextValue = document;
                 foreach (var feature in features)
                 {
                     if (document.Contains(feature))
                     {
                         var tf_idf = 1.0 * document.getFrequency(feature) / document.getMaxFrequency() * featuresIdf[feature];
-                        result.Value.Add(tf_idf);
+                        result.Add(tf_idf);
                     }
                     else
-                        result.Value.Add(0);
+                        result.Add(0);
                 }
             }
             return result;
@@ -141,65 +152,52 @@ namespace Homework1
                 return rs;
             }
         }
-
+        
         //1412542
-        public static List<KeyValuePair<string, double>> Search(string inputFile)
+        public static string Search(string searchString, int numberOfDocs, string similarityName, List<Vector> tfidf_Vector)
         {
-            //Dictionary<string, double> similarDocs = new Dictionary<string, double>();
-            List<KeyValuePair<string, double>> similarDocs = new List<KeyValuePair<string, double>>();
+            // Read tf_idf file
+
+            string labelOfSearchString = null;
             try
             {
-                // Read string and the number of documents that we need to search
-                List<string> inputs = FileIO.ReadFile(inputFile);
-                string searchString = inputs[0];
-                int numberOfDocs = int.Parse(inputs[1]);
-                string similarityName = inputs[2];
+                List<KeyValuePair<string, string>> similarDocs = new List<KeyValuePair<string, string>>();
 
-                // Read tf_idf
-                List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
-                List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
-                foreach (string doc in tf_idfList)
-                {
-                    vectorList.Add(new Vector(doc));
-                }
-
-                // Vectorise
+                // Vectorise, calculate tf_idf
                 Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
 
                 // Get documents that are similar to searchString
-                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs, similarityName);
+                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(tfidf_Vector, numberOfDocs, similarityName);
 
-                using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
+                int index = 0;
+                while (indexesAndSimilarities.Count != 0 || index == tfidf_Vector.Count)
                 {
-                    String line;
-                    int index = 0;
-                    while ((line = sr.ReadLine()) != null)
+                    if (indexesAndSimilarities.ContainsKey(index))
                     {
-                        if (indexesAndSimilarities.ContainsKey(index))
-                        {
-                            similarDocs.Add(new KeyValuePair<string, double>(line, indexesAndSimilarities[index]));
-                            indexesAndSimilarities.Remove(index);
-
-                            // Check if we got enough documents
-                            if (indexesAndSimilarities.Count == 0)
-                                break;
-                        }
-                        ++index;
+                        similarDocs.Add(new KeyValuePair<string, string>(tfidf_Vector[index].TextValue.RawText, tfidf_Vector[index].ValueType));
+                        indexesAndSimilarities.Remove(index);
                     }
+                    ++index;
                 }
 
-                // Order documents by similarity
-                if (similarityName == "Euclid")
-                    similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
-                else
-                    similarDocs = similarDocs.OrderByDescending(x => x.Value).ToList();
+                Dictionary<string, int> labelFreq = new Dictionary<string, int>();
+ 
+                foreach(var doc in similarDocs)
+                {
+                    if (labelFreq.Keys.Contains(doc.Value))
+                        ++labelFreq[doc.Value];
+                    else
+                        labelFreq.Add(doc.Value, 1);
+                }
+
+                labelOfSearchString = labelFreq.FirstOrDefault(x => x.Value == labelFreq.Values.Max()).Key;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return similarDocs;
+            return labelOfSearchString;
         }
     }
 }

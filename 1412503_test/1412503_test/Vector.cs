@@ -39,6 +39,14 @@ namespace _1412503_test
         {
             var featuresIdf = Bow_tfidf.GetFeaturesIdf(baseFile);
             var result = new Vector();
+            //var indexOfDash = input.IndexOf('-');
+            //if (hasValueType)
+            //{
+            //    var input = string.Copy(standardInput);
+            //    var type = indexOfDash != -1 ? input.Substring(0, indexOfDash) : null;
+            //    result.ValueType = type;
+            //}
+            
             if (featuresIdf.Count > 0)
             {
                 var features = featuresIdf.Keys.ToArray();
@@ -58,13 +66,18 @@ namespace _1412503_test
             return result;
         }
 
-        public static List<Vector> VectoriseStandardInputFile(string inputFile, string baseFile, string stopwordFile)
+        public static List<Vector> VectoriseMultiple(List<string> input)
+        {
+
+        }
+
+        public static List<Vector> VectoriseStandardInputFile(string inputFile, string baseFile, string stopwordFile, bool hasValueType)
         {
             List<string> processText = FileUtils.processFileContent(inputFile, stopwordFile);
             List<Vector> result = new List<Vector>();
             foreach (string str in processText)
             {
-                result.Add(VectoriseStandardInput(str, baseFile));
+                result.Add(VectoriseStandardInput(str, baseFile, hasValueType));
             }
             return result;
         }

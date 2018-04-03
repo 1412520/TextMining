@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Homework1
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             String inputFile = "../../raw_text.txt";
             string processedTextFile = "../../processedFile.txt";
@@ -24,8 +24,10 @@ namespace Homework1
             // FileIO file = new FileIO();
 
             // Pre-processing text
-            List<string> input = FileIO.ReadFile(inputFile);
-            var output = StringHelper.ReproduceText(input, stopWordFile);
+            var vectors = new List<Vector>();
+            bool hasValueType = true;
+            List<string> input = FileIO.ReadFileIntoVector(inputFile, out vectors, hasValueType);
+            var output = StringHelper.ReproduceText(vectors, stopWordFile);
             FileIO.WriteFile(output, processedTextFile);
 
             // Extract features
@@ -33,7 +35,10 @@ namespace Homework1
 
             // Calculate tf_idf
             Bow_tfidf.BoW_tfidf(processedTextFile, outputFile, featureFile, roundFile);
+            //var result = Bow_tfidf.tf_idf(vectors, featureFile);
+            Bow_tfidf.tf_idf(ref vectors, featureFile);
 
+/*
             //  Search similar documents
             var similarDocs = Vector.Search(searchFile);
 
@@ -44,7 +49,7 @@ namespace Homework1
                 {
                     wr.WriteLine(doc.Key + ' ' + doc.Value);
                 }
-            }
+            }*/
         }
     }
 }
