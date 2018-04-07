@@ -22,60 +22,27 @@ namespace Homework1
                 if (!String.IsNullOrEmpty(doc))
                     processDocs.Add(new Document(doc));
             }
-            if (File.Exists(outputFile))
-                File.Delete(outputFile);
-            using (StreamWriter wr = new StreamWriter(outputFile, true))
+            foreach (Document doc in processDocs)
             {
-                foreach (Document doc in processDocs)
+                //string[] arrListStr = item0.Split(' ');
+                foreach (string item1 in doc.getTermFreq().Keys)
                 {
-                    //string[] arrListStr = item0.Split(' ');
-                    foreach (string item1 in doc.getTermFreq().Keys)
+                    bool isExists = featureList.ContainsKey(item1);
+                    if (isExists == false)
                     {
-                        bool isExists = featureList.ContainsKey(item1);
-                        if (isExists == false)
-                        {
-                            int quantity = Document.DocContainsFeature(item1, processDocs);
-                            double idf = Math.Log10(1.0 * totalDocs / quantity);
-                            featureList.Add(item1, idf);
-                            wr.Write(item1);
-                            wr.Write(' ');
-                            wr.Write(idf);
-                            wr.WriteLine();
-                        }
-                        
+                        int quantity = Document.DocContainsFeature(item1, processDocs);
+                        double idf = Math.Log10(1.0 * totalDocs / quantity);
+                        featureList.Add(item1, idf);
                     }
-                    
                 }
             }
-                
-            //List<string> featureDocs = new List<string>();
-            //foreach (var item2 in featureList)
-            //{
-            //    featureDocs.Add(item2.Key + ' ' + item2.Value);
-            //}
-            //FileIO.WriteFile(featureDocs, outputFile);
+            List<string> featureDocs = new List<string>();
+            foreach (var item2 in featureList)
+            {
+                featureDocs.Add(item2.Key + ' ' + item2.Value);
+            }
+            FileIO.WriteFile(featureDocs, outputFile);
         }
-
-        //List<string> featureDocs = new List<string>();
-        //foreach (var item2 in features)
-        //{
-        //    featureDocs.Add(item2.Key + ' ' + item2.Value);
-        //}
-        //FileIO.WriteFile(featureDocs, outputFile);
-        //foreach (Document doc in processDocs)
-        //{
-        //    //string[] arrListStr = item0.Split(' ');
-        //    foreach (string item1 in doc.getTermFreq().Keys)
-        //    {
-        //        bool isExists = featureList.ContainsKey(item1);
-        //        if (isExists == false)
-        //        {
-        //            int quantity = Document.DocContainsFeature(item1, processDocs); 
-        //            double idf = Math.Log10(1.0 * totalDocs / quantity);
-        //            FileIO.WriteLine(item1 + ' ' + idf, outputFile);
-        //        }
-        //    }
-        //}
 
 
         //1412542

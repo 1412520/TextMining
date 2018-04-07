@@ -50,7 +50,7 @@ namespace Classification
             //string rawFile = "../../training/raw_text.txt";
             //string classifiedFile = "../../test/classified-file.txt";
 
-            //FileUtils.preprocessDirectory("../../input", "../../training/raw_text.txt");
+            FileUtils.preprocessDirectory("../../input", "../../training/raw_text.txt");
             Bow_tfidf.GenerateTFIDFMatrix("../../training/raw_text.txt", "../../training/processed.txt", "../../training/features.txt", "../../training/tf_idf.txt");
 
 
