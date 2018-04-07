@@ -22,27 +22,61 @@ namespace Homework1
                 if (!String.IsNullOrEmpty(doc))
                     processDocs.Add(new Document(doc));
             }
-            foreach (Document doc in processDocs)
+            if (File.Exists(outputFile))
+                File.Delete(outputFile);
+            using (StreamWriter wr = new StreamWriter(outputFile, true))
             {
-                //string[] arrListStr = item0.Split(' ');
-                foreach (string item1 in doc.getTermFreq().Keys)
+                foreach (Document doc in processDocs)
                 {
-                    bool isExists = featureList.ContainsKey(item1);
-                    if (isExists == false)
+                    //string[] arrListStr = item0.Split(' ');
+                    foreach (string item1 in doc.getTermFreq().Keys)
                     {
-                        int quantity = Document.DocContainsFeature(item1, processDocs); 
-                        double idf = Math.Log10(1.0 * totalDocs / quantity);
-                        featureList.Add(item1, idf);
+                        bool isExists = featureList.ContainsKey(item1);
+                        if (isExists == false)
+                        {
+                            int quantity = Document.DocContainsFeature(item1, processDocs);
+                            double idf = Math.Log10(1.0 * totalDocs / quantity);
+                            featureList.Add(item1, idf);
+                            wr.Write(item1);
+                            wr.Write(' ');
+                            wr.Write(idf);
+                            wr.WriteLine();
+                        }
+                        
                     }
+                    
                 }
             }
-            List<string> featureDocs = new List<string>();
-            foreach (var item2 in featureList)
-            {
-                featureDocs.Add(item2.Key + ' ' + item2.Value);
-            }
-            FileIO.WriteFile(featureDocs, outputFile);
+                
+            //List<string> featureDocs = new List<string>();
+            //foreach (var item2 in featureList)
+            //{
+            //    featureDocs.Add(item2.Key + ' ' + item2.Value);
+            //}
+            //FileIO.WriteFile(featureDocs, outputFile);
         }
+
+        //List<string> featureDocs = new List<string>();
+        //foreach (var item2 in features)
+        //{
+        //    featureDocs.Add(item2.Key + ' ' + item2.Value);
+        //}
+        //FileIO.WriteFile(featureDocs, outputFile);
+        //foreach (Document doc in processDocs)
+        //{
+        //    //string[] arrListStr = item0.Split(' ');
+        //    foreach (string item1 in doc.getTermFreq().Keys)
+        //    {
+        //        bool isExists = featureList.ContainsKey(item1);
+        //        if (isExists == false)
+        //        {
+        //            int quantity = Document.DocContainsFeature(item1, processDocs); 
+        //            double idf = Math.Log10(1.0 * totalDocs / quantity);
+        //            FileIO.WriteLine(item1 + ' ' + idf, outputFile);
+        //        }
+        //    }
+        //}
+
 
         //1412542
         // Return tf_idf of a feature in a document
@@ -81,13 +115,20 @@ namespace Homework1
                 wordList = GetFeaturesIdf(featureFile);
                 if (File.Exists(output))
                     File.Delete(output);
-                for (int i =0; i<docList.Count; i++)
+                using (StreamWriter wr = new StreamWriter(output, true))
                 {
-                    var vector = Vector.VectoriseInput(docList[i], wordList);
-                    FileIO.WriteLine(Vector.GetValue(vector), output);
-                }
-                
+                    for (int i = 0; i < docList.Count; i++)
+                    {
+                        var vector = Vector.VectoriseInput(docList[i], wordList);
+                        for (int j = 0; j < vector.Count; j++)
+                        {
+                            wr.Write(vector[j]);
+                            wr.Write(' ');
+                        }
+                        wr.WriteLine();
+                    }
 
+                }
             }
 
             catch (Exception ex)
@@ -138,8 +179,11 @@ namespace Homework1
             Bow_tfidf.CreateFeatureList(processedFile, featureFile);
 
             // Calculate tf_idf
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
             Bow_tfidf.BoW_tfidf(processedFile, outputFile, featureFile, ConfigurationManager.AppSettings.Get("RoundFile"));
-            //var result = Bow_tfidf.tf_idf(vectors, featureFile);
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //Console.WriteLine(elapsedMs);
         }
     }
 }

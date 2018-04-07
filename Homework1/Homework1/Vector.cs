@@ -42,14 +42,15 @@ namespace Homework1
             
         }
 
-        public static string GetValue(List<double> values)
+        public static void GetValue(List<double> values, ref string formerString)
         {
-            string result = "";
-            foreach(var val in values)
+            //string result = "";
+            foreach (var val in values)
             {
-                result += val + " ";
+                formerString += val + " ";
             }
-            return result;
+            //return result;
+            formerString += '\n';
         }
 
         //vectorise input base on features and their idf in baseFile

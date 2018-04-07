@@ -93,6 +93,20 @@ namespace Homework1
             }
         }
 
+        public static void WriteLineContinuously<T>(List<T> text, Func<T, string> action, string fileOutput)
+        {
+            using (StreamWriter wr = new StreamWriter(fileOutput, true))
+            {
+                for (int i =0; i < text.Count; i++)
+                {
+                    //var word = text[i].ToString() + ' ';
+                    var word = action(text[i]);
+                    wr.Write(word);
+                }
+                wr.WriteLine();
+            }
+        }
+
         //doc va dua file vao Vector
         public static List<string> ReadFileIntoVector(string inputFile, out List<Vector> output, bool hasValueType = false)
         {
