@@ -34,6 +34,32 @@ namespace Homework1
                 result.Add(name + " - " + str);
             }
         }
+
+        // 1412542 
+        // Date: 08/04/2018
+        // Delete all files from a directory
+        public static void deleteAllFiles(string path)
+        {
+            DirectoryInfo di = new DirectoryInfo(path);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
+
+        // 1412542 
+        // Date: 08/04/2018
+        // Get names of all files in a special directory
+        public static List<string> getAllFileNames(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                return new List<string>(Directory.GetFiles(path, "*.txt"));
+            }
+            else
+                return null;
+        }
     }
-        
+
 }
