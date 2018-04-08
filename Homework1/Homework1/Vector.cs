@@ -230,5 +230,29 @@ namespace Homework1
 
             return similarDocs;
         }
+
+        //1412520
+        public static int CountClassElements(string valueType, List<Vector> vectors)
+        {
+            var result = 0;
+            foreach (var vector in vectors)
+            {
+                if (vector.ValueType == valueType)
+                    result++;
+            }
+            return result;
+        }
+
+        //1412520
+        public static HashSet<string> GetDistinctClassTypes(List<Vector> vectors)
+        {
+            var types = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var vector in vectors)
+            {
+                if (!types.Contains(vector.ValueType))
+                    types.Add(vector.ValueType);
+            }
+            return types;
+        }
     }
 }
