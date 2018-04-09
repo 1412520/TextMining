@@ -336,5 +336,35 @@ namespace Homework1
             }
             return sumPi / classes.Count;
         }
+        
+        //1412595
+        public static double getRecall(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            return 1.0 * CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / CountClassElements(valueType, targetVectors);
+        }
+
+        //1412595
+        public static double getRecallMacro(List<Vector> c, List<Vector> targetVectors)
+        {
+            HashSet<String> classes = GetDistinctClassTypes(c);
+            double sumR = 0;
+            for (int i = 0; i < classes.Count; i++)
+            {
+                sumR += getRecall(classes.ElementAt(i), c, targetVectors);
+            }
+            return 1.0 * sumR / classes.Count;
+        }
+
+        //1412595
+        public static double getFmicro(List<Vector> c, List<Vector> targetVectors)
+        {
+            HashSet<String> classes = GetDistinctClassTypes(c);
+            double sum = 0;
+            for (int i = 0; i < classes.Count; i++)
+            {
+                sum += CountShareSameTypeRecords(classes.ElementAt(i), c, targetVectors);
+            }
+            return 1.0 * sum / targetVectors.Count();
+        }
     }
 }
