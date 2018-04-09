@@ -319,5 +319,22 @@ namespace Homework1
             }
             return count;
         }
+        //1412503
+        public static double CalculatePi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            return 1.0 * CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / CountClassElements(valueType, sourceVectors);
+        }
+
+        //1412503
+        public static double CalculatePmacro(List<Vector> c, List<Vector> targetVectors)
+        {
+            HashSet<String> classes = GetDistinctClassTypes(c);
+            double sumPi = 0;
+            for (int i = 0; i < classes.Count; i++)
+            {
+                sumPi += CalculatePi(classes.ElementAt(i), c, targetVectors);
+            }
+            return sumPi / classes.Count;
+        }
     }
 }
