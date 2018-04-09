@@ -65,23 +65,29 @@ namespace Classification
             //Get Tf_idf from file
             List<string> tfidfList = FileIO.ReadFile(tfidfFile);
             List<Vector> tfidfVector = new List<Vector>(tfidfList.Count);
-            foreach (string tf_idf in tfidfList)
-            {
-                tfidfVector.Add(new Vector(tf_idf));
-            }
+            int i = 0; 
+            //foreach (string tf_idf in tfidfList)
+            //{
+            //    Console.WriteLine(i);
+            //    tfidfVector.Add(new Vector(tf_idf));
+            //    i++;
+            //}
 
             List<string> labeledString = new List<string>();
             string label;
+            int count = 0;
             foreach (string searchString in inputs)
             {
                 //Vectorise, calculate tf_idf
                 Vector searchVector = Vector.Vectorise(searchString, featureFile);
 
                 //Get label of documents that are similar to searchString
-                Dictionary<int, double> similarDocIndex = searchVector.GetListSimilarityMeasure(tfidfVector, numberOfDocs, similarityName);
+                Console.WriteLine(count);
+                Dictionary<int, double> similarDocIndex = searchVector.GetListSimilarityMeasure(tfidfList, numberOfDocs, similarityName);
                 label = GetLabelOfDocument(similarDocIndex.Keys.ToList(), rawFile);
 
                 labeledString.Add(label + " - " + searchString);
+                count++;
             }
 
             FileIO.WriteFile(labeledString, classifiedFile);

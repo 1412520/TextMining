@@ -101,8 +101,9 @@ namespace Homework1
             return result;
         }
 
-        public double getEuclidSimilarity(Vector vector)
+        public double getEuclidSimilarity(string weighs)
         {
+            var vector = new Vector(weighs);
             if (Value.Count != vector.Value.Count)
                 return 0;
             double squareSum = 0;
@@ -113,8 +114,9 @@ namespace Homework1
             return Math.Sqrt(squareSum);
         }
 
-        public double getCosinSimilarity(Vector vector)
+        public double getCosinSimilarity(string weighs)
         {
+            var vector = new Vector(weighs);
             if (Value.Count != vector.Value.Count)
                 return 0;
             double dot = 0, mag1 = 0, mag2 = 0;
@@ -137,31 +139,69 @@ namespace Homework1
             return funcName(vector);
         }
 
-        public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity, string similarityName)
+        //public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity, string similarityName)
+        //{
+        //    if(quantity <= 0)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        if (listV.Count < quantity)
+        //        {
+        //            quantity = listV.Count;
+        //        }
+        //        Dictionary<int, double> rs = new Dictionary<int, double>(listV.Count);
+        //        if (similarityName == "Euclid")
+        //        {
+        //            for (int i = 0; i < listV.Count(); i++)
+        //                rs.Add(i, getEuclidSimilarity(listV[i]));
+
+        //            rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
+        //        }
+        //        else if (similarityName == "Cosine")
+        //        {
+        //            for (int i = 0; i < listV.Count(); i++)
+        //                rs.Add(i, getCosinSimilarity(listV[i]));
+
+        //            rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
+        //        }
+        //        else
+        //            Console.WriteLine("Similarity name is invalid!");
+
+        //        return rs;
+        //    }
+        //}
+
+        public Dictionary<int, double> GetListSimilarityMeasure(List<string> vectors, int quantity, string similarityName)
         {
-            if(quantity <= 0)
+            if (quantity <= 0)
             {
                 return null;
             }
             else
             {
-                if (listV.Count < quantity)
+                if (vectors.Count < quantity)
                 {
-                    quantity = listV.Count;
+                    quantity = vectors.Count;
                 }
-                Dictionary<int, double> rs = new Dictionary<int, double>(listV.Count);
+                Dictionary<int, double> rs = new Dictionary<int, double>(vectors.Count);
                 if (similarityName == "Euclid")
                 {
-                    for (int i = 0; i < listV.Count(); i++)
-                        rs.Add(i, getEuclidSimilarity(listV[i]));
+                    for (int i = 0; i < vectors.Count(); i++)
+                        rs.Add(i, getEuclidSimilarity(vectors[i]));
 
                     rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
                 else if (similarityName == "Cosine")
                 {
-                    for (int i = 0; i < listV.Count(); i++)
-                        rs.Add(i, getCosinSimilarity(listV[i]));
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
 
+                    for (int i = 0; i < vectors.Count(); i++)
+                        rs.Add(i, getCosinSimilarity(vectors[i]));
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds;
+                    Console.WriteLine(elapsedMs);
                     rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
                 else
@@ -171,65 +211,66 @@ namespace Homework1
             }
         }
 
+
         //1412542
-        public static List<KeyValuePair<string, double>> Search(string inputFile)
-        {
-            //Dictionary<string, double> similarDocs = new Dictionary<string, double>();
-            List<KeyValuePair<string, double>> similarDocs = new List<KeyValuePair<string, double>>();
-            try
-            {
-                // Read string and the number of documents that we need to search
-                List<string> inputs = FileIO.ReadFile(inputFile);
-                string searchString = inputs[0];
-                int numberOfDocs = int.Parse(inputs[1]);
-                string similarityName = inputs[2];
+        //public static List<KeyValuePair<string, double>> Search(string inputFile)
+        //{
+        //    //Dictionary<string, double> similarDocs = new Dictionary<string, double>();
+        //    List<KeyValuePair<string, double>> similarDocs = new List<KeyValuePair<string, double>>();
+        //    try
+        //    {
+        //        // Read string and the number of documents that we need to search
+        //        List<string> inputs = FileIO.ReadFile(inputFile);
+        //        string searchString = inputs[0];
+        //        int numberOfDocs = int.Parse(inputs[1]);
+        //        string similarityName = inputs[2];
 
-                // Read tf_idf
-                List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
-                List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
-                foreach (string doc in tf_idfList)
-                {
-                    vectorList.Add(new Vector(doc));
-                }
+        //        // Read tf_idf
+        //        List<string> tf_idfList = FileIO.ReadFile(ConfigurationManager.AppSettings.Get("BowTfIdfFile"));
+        //        List<Vector> vectorList = new List<Vector>(tf_idfList.Count);
+        //        foreach (string doc in tf_idfList)
+        //        {
+        //            vectorList.Add(new Vector(doc));
+        //        }
 
-                // Vectorise
-                Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
+        //        // Vectorise
+        //        Vector searchVector = Vectorise(searchString, ConfigurationManager.AppSettings.Get("FeatureFile"));
 
-                // Get documents that are similar to searchString
-                Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs, similarityName);
+        //        // Get documents that are similar to searchString
+        //        Dictionary<int, double> indexesAndSimilarities = searchVector.GetListSimilarityMeasure(vectorList, numberOfDocs, similarityName);
 
-                using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
-                {
-                    String line;
-                    int index = 0;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        if (indexesAndSimilarities.ContainsKey(index))
-                        {
-                            similarDocs.Add(new KeyValuePair<string, double>(line, indexesAndSimilarities[index]));
-                            indexesAndSimilarities.Remove(index);
+        //        using (StreamReader sr = new StreamReader(ConfigurationManager.AppSettings.Get("RawFile")))
+        //        {
+        //            String line;
+        //            int index = 0;
+        //            while ((line = sr.ReadLine()) != null)
+        //            {
+        //                if (indexesAndSimilarities.ContainsKey(index))
+        //                {
+        //                    similarDocs.Add(new KeyValuePair<string, double>(line, indexesAndSimilarities[index]));
+        //                    indexesAndSimilarities.Remove(index);
 
-                            // Check if we got enough documents
-                            if (indexesAndSimilarities.Count == 0)
-                                break;
-                        }
-                        ++index;
-                    }
-                }
+        //                    // Check if we got enough documents
+        //                    if (indexesAndSimilarities.Count == 0)
+        //                        break;
+        //                }
+        //                ++index;
+        //            }
+        //        }
 
-                // Order documents by similarity
-                if (similarityName == "Euclid")
-                    similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
-                else
-                    similarDocs = similarDocs.OrderByDescending(x => x.Value).ToList();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+        //        // Order documents by similarity
+        //        if (similarityName == "Euclid")
+        //            similarDocs = similarDocs.OrderBy(x => x.Value).ToList();
+        //        else
+        //            similarDocs = similarDocs.OrderByDescending(x => x.Value).ToList();
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
 
-            return similarDocs;
-        }
+        //    return similarDocs;
+        //}
 
         //1412520
         public static int CountClassElements(string valueType, List<Vector> vectors)
@@ -253,6 +294,30 @@ namespace Homework1
                     types.Add(vector.ValueType);
             }
             return types;
+        }
+
+        public static bool CheckIfContained(Vector vector, List<Vector> vectors)
+        {
+            foreach (var vec in vectors)
+            {
+                if ((vector.TextValue.RawText == vec.TextValue.RawText) && (vector.ValueType == vec.ValueType))
+                    return true;
+            }
+            return false;
+        }
+
+        //1412520
+        //count number of shared records of same type
+        //source là file test, target là file train
+        public static int CountShareSameTypeRecords(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            int count = 0;
+            for (int i =0; i<sourceVectors.Count; i++)
+            {
+                if (CheckIfContained(sourceVectors[i], targetVectors))
+                    count++;
+            }
+            return count;
         }
     }
 }
