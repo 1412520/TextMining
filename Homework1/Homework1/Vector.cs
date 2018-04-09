@@ -308,7 +308,7 @@ namespace Homework1
 
         //1412520
         //count number of shared records of same type
-        //source là file test, target là file train
+        //source is our result, target is the correct result
         public static int CountShareSameTypeRecords(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
         {
             int count = 0;
