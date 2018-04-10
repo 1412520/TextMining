@@ -84,5 +84,12 @@ namespace Classification
                 }
             }
         }
+
+        //1412503
+        //Fscore và Fmacro có công thức giống nhau
+        public static double CalculateFscore(double Pi, double Ri)
+        {
+            return 2 * Pi * Ri / (Pi + Ri);
+        }
     }
 }
