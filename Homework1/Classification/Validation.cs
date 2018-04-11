@@ -190,6 +190,15 @@ namespace Classification
             FileIO.WriteFile(F_array, "../../validation/result.txt");
         }
 
+<<<<<<< HEAD
 
+=======
+        //1412503
+        //Fscore và Fmacro có công thức giống nhau
+        public static double CalculateFscore(double Pi, double Ri)
+        {
+            return 2 * Pi * Ri / (Pi + Ri);
+        }
+>>>>>>> 8cc4679d1a9e87b829675e00c01e493dc706884a
     }
 }
