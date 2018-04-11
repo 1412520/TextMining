@@ -38,16 +38,16 @@ namespace Homework1
             //var result = Bow_tfidf.tf_idf(vectors, featureFile);
 
             //  Search similar documents
-            var similarDocs = Vector.Search(searchFile);
+            //var similarDocs = Vector.Search(searchFile);
 
             // Wrire similar documents to file
-            using (StreamWriter wr = new StreamWriter(similarDocFile))
+            /*using (StreamWriter wr = new StreamWriter(similarDocFile))
             {
                 foreach (var doc in similarDocs)
                 {
                     wr.WriteLine(doc.Key + ' ' + doc.Value);
                 }
-            }
+            }*/
         }
     }
 }

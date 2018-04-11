@@ -9,6 +9,68 @@ namespace Classification
 {
     public class CrossValidation
     {
+        //1412503
+        public static double CalculatePi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            return 1.0 * Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / Vector.CountClassElements(valueType, sourceVectors);
+        }
+
+        //1412503
+        public static double CalculatePmacro(List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            HashSet<String> classes = Vector.GetDistinctClassTypes(targetVectors);
+            double sumPi = 0;
+            for (int i = 0; i < classes.Count; i++)
+            {
+                sumPi += CalculatePi(classes.ElementAt(i), sourceVectors, targetVectors);
+            }
+            return 1.0 * sumPi / classes.Count;
+        }
+
+        //1412595
+        public static double calculateRi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            return 1.0 * Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / Vector.CountClassElements(valueType, targetVectors);
+        }
+
+        //1412595
+        public static double calculateRmacro(List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            HashSet<String> classes = Vector.GetDistinctClassTypes(targetVectors);
+            double sumR = 0;
+            for (int i = 0; i < classes.Count; i++)
+            {
+                sumR += calculateRi(classes.ElementAt(i), sourceVectors, targetVectors);
+            }
+            return 1.0 * sumR / classes.Count;
+        }
+
+        //1412595
+        public static double calculateFmicro(List<Vector> sourceVectors, List<Vector> targetVectors)
+        {
+            HashSet<String> classes = Vector.GetDistinctClassTypes(targetVectors);
+            double sum = 0;
+            for (int i = 0; i < classes.Count; i++)
+            {
+                sum += Vector.CountShareSameTypeRecords(classes.ElementAt(i), sourceVectors, targetVectors);
+            }
+            return 1.0 * sum / targetVectors.Count();
+        }
+
+        public static double calculateFmacroOrFscore(Double R, Double P)
+        {
+            return (1.0 * 2 * R * P) / (R + P);
+        }
+
+        //1412543
+        public static List<string> revoveLabelOfList(List<string> input)
+        {
+            for (int i = 0; i < input.Count(); i++)
+                input[i] = input[i].Split('-').Last();
+
+            return input;
+        }
+
         // 141242
         // Date: 08/04/2018
         static void SplitTrainTest(List<string> data, int numberOfFolds)
@@ -55,13 +117,13 @@ namespace Classification
             // Read the number of subset
             int numberOfFolds = int.Parse(FileIO.ReadFile(kFoldsFile)[0]);
 
-            /*
-            // Read data
+            
+            /*// Read data
             List<string> data = FileIO.ReadFile(inputFile);
 
             // Split data into subsets
-            SplitTrainTest(data, numberOfFolds);
-           */
+            SplitTrainTest(data, numberOfFolds);*/
+           
 
             // Read subsets
             List<List<string>> subset = new List<List<string>>();
@@ -72,17 +134,62 @@ namespace Classification
                 subset.Add(FileIO.ReadFile(fileName));
             }
 
+            //calculate avg Fmicro and avg Fmacro
+            double sum_Fmicro = 0;
+            double sum_Fmacro = 0;
+
             // build model and test by k-folds cross validation
-            for( int i = 0; i < numberOfFolds; i++)
+            for (int i = 0; i < numberOfFolds; i++)
             {
                 // subset[i] is test set, others are training sets
                 List<string> trainingSet = new List<string>();
+                List<string> testTarget = new List<string>();
+                List<string> testSet = new List<string>();
                 for( int subIndex = 0; subIndex < numberOfFolds; subIndex++)
                 {
-                    if (subIndex != i)
+                    if (subIndex == i)
                         trainingSet.AddRange(subset[subIndex]);
+                    else
+                        testTarget = subset[i];
                 }
+                FileIO.WriteFile(testTarget, "../../validation/testTarget.txt");
+                //Remove label of testSetTarget
+                testSet = revoveLabelOfList(testTarget);
+                //Write testSet and trainSet into file
+                FileIO.WriteFile(trainingSet, "../../validation/train.txt");
+                FileIO.WriteFile(testSet, "../../validation/test.txt");
+
+                Bow_tfidf.GenerateTFIDFMatrix("../../validation/train.txt", "../../validation/processed.txt", "../../validation/features.txt", "../../validation/tf_idf.txt");
+                Model.classifyForValidate();
+
+                bool hasValueType = true;
+
+                List<Vector> targetVector = new List<Vector>();
+                List<string> testSetTarget = FileIO.ReadFileIntoVector("../../validation/testTarget.txt", out targetVector, hasValueType);
+
+                List<Vector> sourceVector = new List<Vector>();
+                List<string> testSetResult = FileIO.ReadFileIntoVector("../../validation/testResult.txt", out sourceVector, hasValueType);
+
+                Double Rmacro = calculateRmacro(sourceVector, targetVector);
+                Double Pmacro = CalculatePmacro(sourceVector, targetVector);
+
+                sum_Fmacro += calculateFmacroOrFscore(Rmacro, Pmacro);
+                sum_Fmicro += calculateFmicro(sourceVector, targetVector);
+                Console.WriteLine("Fmacro " + sum_Fmacro);
+                Console.WriteLine("Fmicro " + sum_Fmicro);
             }
+
+            List<string> F_array = new List<string>();
+            double avg_Fmacro = (1.0 * sum_Fmicro) / numberOfFolds;
+            double avg_Fmicro = (1.0 * sum_Fmacro) / numberOfFolds;
+
+            F_array.Add(avg_Fmacro.ToString());
+            F_array.Add(avg_Fmicro.ToString());
+
+            //Write avg Fmacro and avg Fmicro into file
+            FileIO.WriteFile(F_array, "../../validation/result.txt");
         }
+
+
     }
 }
