@@ -114,24 +114,118 @@ namespace Homework1
             return Math.Sqrt(squareSum);
         }
 
-        public double getCosinSimilarity(string weighs)
-        {
-            var vector = new Vector(weighs);
-            if (Value.Count != vector.Value.Count)
-                return 0;
-            double dot = 0, mag1 = 0, mag2 = 0;
+        //public double getCosinSimilarity(string weighs)
+        //{
+        //    var vector = new Vector(weighs);
+        //    if (Value.Count != vector.Value.Count)
+        //        return 0;
+        //    double dot = 0, mag1 = 0, mag2 = 0;
 
-            for (int i = 0; i < Value.Count; i++)
+        //    for (int i = 0; i < Value.Count; i++)
+        //    {
+        //        dot += Value[i] * vector.Value[i];
+        //        mag1 += Math.Pow(Value[i], 2);
+        //        mag2 += Math.Pow(vector.Value[i], 2);
+        //    }
+
+        //    if (mag1 == 0 || mag2 == 0)
+        //        return 0;
+        //    else
+        //        return (1.0 * dot) / (Math.Sqrt(mag1) * Math.Sqrt(mag2)); 
+        //}
+
+        public double getCosinSimilarity(string weighs, double mag1)
+        {
+            var vector = weighs.Split(' ');
+            if (Value.Count != vector.Count() - 1)
+                return 0;
+            double dot = 0, mag2 = 0;
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
+            var loops = Value.Count / 10;
+            //var anotherLoop = Value.Count % 10;
+            int i = 0;
+            for (int k =0; k< loops;)
             {
-                dot += Value[i] * vector.Value[i];
-                mag1 += Math.Pow(Value[i], 2);
-                mag2 += Math.Pow(vector.Value[i], 2);
+                //1
+                var weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //2
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //3
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //4
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //5
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //6
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //7
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //8
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //9
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                //10
+                weigh = double.Parse(vector[i]);
+                dot += Value[i] * weigh;
+                //mag1 += Math.Pow(values[i], 2);
+                mag2 += Math.Pow(weigh, 2);
+                ++i;
+                ++k;
             }
+
+            //for (i = loops; i < Value.Count;)
+            //{
+            //    var weigh = double.Parse(vector[i]);
+            //    dot += Value[i] * weigh;
+            //    //mag1 += Math.Pow(values[i], 2);
+            //    mag2 += Math.Pow(weigh, 2);
+            //    ++i;
+            //}
+
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //Console.WriteLine(elapsedMs);
 
             if (mag1 == 0 || mag2 == 0)
                 return 0;
             else
-                return (1.0 * dot) / (Math.Sqrt(mag1) * Math.Sqrt(mag2)); 
+                return (1.0 * dot) / (Math.Sqrt(mag1) * Math.Sqrt(mag2));
         }
 
         public double GetSimilarityMeasure(Vector vector, Func<Vector, double> funcName)
@@ -186,6 +280,7 @@ namespace Homework1
                     quantity = vectors.Count;
                 }
                 Dictionary<int, double> rs = new Dictionary<int, double>(vectors.Count);
+                var vectorArray = vectors.ToArray();
                 if (similarityName == "Euclid")
                 {
                     for (int i = 0; i < vectors.Count(); i++)
@@ -195,13 +290,24 @@ namespace Homework1
                 }
                 else if (similarityName == "Cosine")
                 {
+                    var values = this.Value.ToArray();
+                    double mag1 = 0;
                     var watch = System.Diagnostics.Stopwatch.StartNew();
+                    mag1 = Value.Sum(x => Math.Pow(x, 2));
 
-                    for (int i = 0; i < vectors.Count(); i++)
-                        rs.Add(i, getCosinSimilarity(vectors[i]));
+                    //var loops = vectors.Count / 10;
+                    //var anotherLoops = vectors.Count % 10;
+                    for(int i =0; i<vectors.Count; )
+                    {
+                        rs.Add(i, getCosinSimilarity(vectorArray[i], mag1));
+                        ++i;
+                    }
+                        
+
                     watch.Stop();
                     var elapsedMs = watch.ElapsedMilliseconds;
                     Console.WriteLine(elapsedMs);
+
                     rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
                 else
