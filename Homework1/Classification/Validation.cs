@@ -66,7 +66,11 @@ namespace Classification
         public static List<string> revoveLabelOfList(List<string> input)
         {
             for (int i = 0; i < input.Count(); i++)
-                input[i] = input[i].Split('-').Last();
+            {
+                //input[i] = input[i].Split('-').Last();
+                string sub = input[i].Remove(input[i].IndexOf("-"));
+                input[i] = input[i].Substring(input[i].IndexOf("-") + 1, input[i].Count() - sub.Count() -1 );
+            }
 
             return input;
         }
