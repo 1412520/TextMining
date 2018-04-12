@@ -33,6 +33,7 @@ namespace Homework1
             return list;
         }
 
+
         public static HashSet<string> ReadFileIntoHashTable(string fileInput)
         {
             HashSet<string> list = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

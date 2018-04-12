@@ -64,6 +64,13 @@ namespace Classification
 
             //Get Tf_idf from file
             List<string> tfidfList = FileIO.ReadFile(tfidfFile);
+            List<Vector> tfidfVector = new List<Vector>(tfidfList.Count);
+            //int i = 0; 
+            //foreach (string tf_idf in tfidfList)
+            //{
+               //tfidfVector.Add(new Vector(tf_idf));
+                //i++;
+            //}
 
             List<string> labeledString = new List<string>();
             string label;
@@ -86,6 +93,48 @@ namespace Classification
 
 
             //Bow_tfidf.GenerateTFIDFMatrix("../../test/test.txt", "../../test/processed.txt", "../../training/features.txt", "../../test/tf_idf.txt");
+
+        }
+
+        public static void classifyForValidate()
+        {
+            //Read file to get k and similarity name
+            string kFile = "../../k.txt";
+
+            string trainFile = "../../validation/train.txt";
+            string testFile = "../../validation/test.txt";
+            string tfidfFile = "../../validation/tf_idf.txt";
+            string featureFile = "../../validation/features.txt";
+            string classifiedFile = "../../validation/testResult.txt";
+
+            //Get k and similarity name
+            List<string> inputs = FileIO.ReadFile(kFile);
+            int numberOfDocs = int.Parse(inputs[0]);
+            string similarityName = inputs[1];
+
+            //Get Tf_idf from file
+            List<string> tfidfList = FileIO.ReadFile(tfidfFile);
+            List<Vector> tfidfVector = new List<Vector>(tfidfList.Count);
+
+            List<string> labeledString = new List<string>();
+            string label;
+            int count = 0;
+
+            List<string> testInput = FileIO.ReadFile(testFile);
+            foreach (string searchString in testInput)
+            {
+                //Vectorise, calculate tf_idf
+                Vector searchVector = Vector.Vectorise(searchString, featureFile);
+
+                //Get label of documents that are similar to searchString
+                Dictionary<int, double> similarDocIndex = searchVector.GetListSimilarityMeasure(tfidfList, numberOfDocs, similarityName);
+                label = GetLabelOfDocument(similarDocIndex.Keys.ToList(), trainFile);
+
+                labeledString.Add(label + " - " + searchString);
+                count++;
+            }
+
+            FileIO.WriteFile(labeledString, classifiedFile);
 
         }
     }
