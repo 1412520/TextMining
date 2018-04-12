@@ -63,7 +63,7 @@ namespace Classification
         }
 
         //1412543
-        public static List<string> revoveLabelOfList(List<string> input)
+        public static List<string> RemoveLabelOfList(List<string> input)
         {
             for (int i = 0; i < input.Count(); i++)
             {
@@ -158,7 +158,7 @@ namespace Classification
                 }
                 FileIO.WriteFile(testTarget, "../../validation/testTarget.txt");
                 //Remove label of testSetTarget
-                testSet = revoveLabelOfList(testTarget);
+                testSet = RemoveLabelOfList(testTarget);
                 //Write testSet and trainSet into file
                 FileIO.WriteFile(trainingSet, "../../validation/train.txt");
                 FileIO.WriteFile(testSet, "../../validation/test.txt");
@@ -192,6 +192,55 @@ namespace Classification
 
             //Write avg Fmacro and avg Fmicro into file
             FileIO.WriteFile(F_array, "../../validation/result.txt");
+        }
+
+        //public static void ClassifyAndValidateOne(string trainFile, string sampleClassifiedFile, string classificationFile, string validationFile)
+        //1412520
+        public static void ClassifyAndValidateOne()
+        {
+            var testsWithValueType = FileIO.ReadFile("../../validation/testTarget.txt");
+            var testRecords = RemoveLabelOfList(testsWithValueType);
+            FileIO.WriteFile(testRecords, "../../validation/testResult.txt");
+            Model.classifyForValidate();
+            Validate("../../validation/testTarget.txt", "../../validation/testResult.txt", "../../validation/result.txt");
+        }
+
+        //1412520
+        public static void Validate(string sampleClassificationFile, string classificationFile, string resultFile)
+        {
+            var sampleVectors = new List<Vector>();
+            var vectors = new List<Vector>();
+
+            FileIO.ReadFileIntoVector(sampleClassificationFile, out sampleVectors, true);
+            FileIO.ReadFileIntoVector(classificationFile, out vectors, true);
+
+            var classes = Vector.GetDistinctClassTypes(sampleVectors);
+
+            List<string> result = new List<string>(classes.Count * 3 + 2);
+            int i = 0;
+            double sumP = 0;
+            double sumR = 0;
+            int preciseClassification = 0;
+            foreach (var type in classes)
+            {
+                var Ptype = CalculatePi(type, vectors, sampleVectors);
+                var Rtype = calculateRi(type, vectors, sampleVectors);
+                var Ftype = calculateFmacroOrFscore(Rtype, Ptype);
+                result.Add('P' + type + ' ' + Ptype.ToString());
+                result.Add('R' + type + ' ' + Rtype.ToString());
+                result.Add('F' + type + ' ' + Ftype.ToString());
+                sumP += Ptype;
+                sumR += Rtype;
+                preciseClassification += Vector.CountShareSameTypeRecords(type, vectors, sampleVectors);
+            }
+            double Pmacro = sumP / classes.Count;
+            double Rmacro = sumR / classes.Count;
+            double Fmacro = calculateFmacroOrFscore(Rmacro, Pmacro);
+            result.Add("Fmacro " + Fmacro.ToString());
+            double Fmicro = preciseClassification / sampleVectors.Count;
+            result.Add("Fmicro " + Fmicro.ToString());
+
+            FileIO.WriteFile(result, resultFile);
         }
     }
 }

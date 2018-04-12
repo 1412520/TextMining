@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Homework1
@@ -140,88 +139,12 @@ namespace Homework1
             if (Value.Count != vector.Count() - 1)
                 return 0;
             double dot = 0, mag2 = 0;
-            //var watch = System.Diagnostics.Stopwatch.StartNew();
-            var loops = Value.Count / 10;
-            //var anotherLoop = Value.Count % 10;
-            int i = 0;
-            for (int k =0; k< loops;)
+            for (int i = 0; i < Value.Count; i++)
             {
-                //1
                 var weigh = double.Parse(vector[i]);
                 dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
                 mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //2
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //3
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //4
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //5
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //6
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //7
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //8
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //9
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                //10
-                weigh = double.Parse(vector[i]);
-                dot += Value[i] * weigh;
-                //mag1 += Math.Pow(values[i], 2);
-                mag2 += Math.Pow(weigh, 2);
-                ++i;
-                ++k;
             }
-
-            //for (i = loops; i < Value.Count;)
-            //{
-            //    var weigh = double.Parse(vector[i]);
-            //    dot += Value[i] * weigh;
-            //    //mag1 += Math.Pow(values[i], 2);
-            //    mag2 += Math.Pow(weigh, 2);
-            //    ++i;
-            //}
-
-            //watch.Stop();
-            //var elapsedMs = watch.ElapsedMilliseconds;
-            //Console.WriteLine(elapsedMs);
-
             if (mag1 == 0 || mag2 == 0)
                 return 0;
             else
@@ -283,27 +206,24 @@ namespace Homework1
                 var vectorArray = vectors.ToArray();
                 if (similarityName == "Euclid")
                 {
-                    for (int i = 0; i < vectors.Count(); i++)
-                        rs.Add(i, getEuclidSimilarity(vectors[i]));
-
+                    Parallel.ForEach(vectors, (vector, state, index) => {
+                        rs.Add((int)index, getEuclidSimilarity(vector));
+                    });
                     rs = rs.OrderBy(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
                 else if (similarityName == "Cosine")
                 {
                     var values = this.Value.ToArray();
                     double mag1 = 0;
+                    if (File.Exists("../../temp.txt"))
+                        File.Delete("../../temp.txt");
+
                     var watch = System.Diagnostics.Stopwatch.StartNew();
                     mag1 = Value.Sum(x => Math.Pow(x, 2));
-
-                    //var loops = vectors.Count / 10;
-                    //var anotherLoops = vectors.Count % 10;
-                    for(int i =0; i<vectors.Count; )
-                    {
-                        rs.Add(i, getCosinSimilarity(vectorArray[i], mag1));
-                        ++i;
-                    }
-                        
-
+                    Parallel.ForEach(vectors, (vector, state, index) => {
+                        rs.Add((int)index, getCosinSimilarity(vector, mag1));
+                    });
+                   
                     watch.Stop();
                     var elapsedMs = watch.ElapsedMilliseconds;
                     Console.WriteLine(elapsedMs);
@@ -317,6 +237,15 @@ namespace Homework1
             }
         }
 
+        public void Calc(Dictionary<int, double> rs, List<string> vectors, int count, double mag1)
+        {
+            for (int i = 0; i < count;)
+            {
+
+                rs.Add(i, getCosinSimilarity(vectors[i], mag1));
+                ++i;
+            }
+        }
 
         //1412542
         //public static List<KeyValuePair<string, double>> Search(string inputFile)
