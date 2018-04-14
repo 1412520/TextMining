@@ -215,18 +215,18 @@ namespace Homework1
                 {
                     var values = this.Value.ToArray();
                     double mag1 = 0;
-                    if (File.Exists("../../temp.txt"))
-                        File.Delete("../../temp.txt");
+                    //if (File.Exists("../../temp.txt"))
+                    //    File.Delete("../../temp.txt");
 
-                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    //var watch = System.Diagnostics.Stopwatch.StartNew();
                     mag1 = Value.Sum(x => Math.Pow(x, 2));
                     Parallel.ForEach(vectors, (vector, state, index) => {
                         rs.Add((int)index, getCosinSimilarity(vector, mag1));
                     });
                    
-                    watch.Stop();
-                    var elapsedMs = watch.ElapsedMilliseconds;
-                    Console.WriteLine(elapsedMs);
+                    //watch.Stop();
+                    //var elapsedMs = watch.ElapsedMilliseconds;
+                    //Console.WriteLine(elapsedMs);
 
                     rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
