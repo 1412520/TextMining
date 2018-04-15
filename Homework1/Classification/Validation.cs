@@ -124,14 +124,15 @@ namespace Classification
             // Read the number of subset
             int numberOfFolds = int.Parse(FileIO.ReadFile(kFoldsFile)[0]);
 
-            
-            /*// Read data
+            /*
+            // Read data
             List<string> data = FileIO.ReadFile(inputFile);
 
             // Split data into subsets
-            SplitTrainTest(data, numberOfFolds);*/
-           
-
+            SplitTrainTest(data, numberOfFolds);
+           */
+            
+            
             // Read subsets
             List<List<string>> subset = new List<List<string>>();
             List<string> fileNameList = FileUtils.getAllFileNames("../../splited_data");
@@ -159,7 +160,7 @@ namespace Classification
                     if (subIndex != i)
                         trainingSet.AddRange(subset[subIndex]);
                     else
-                        testTarget = subset[i];
+                        testTarget = subset[i].ToList();
                 }
                 Console.WriteLine("The time to create training and test sets: {0} ", watch.ElapsedMilliseconds);
                 FileIO.WriteFile(testTarget, "../../validation/testTarget.txt");
