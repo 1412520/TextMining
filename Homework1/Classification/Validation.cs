@@ -149,8 +149,8 @@ namespace Classification
             for (int i = 0; i < numberOfFolds; i++)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                //Console.WriteLine("Fold {0}: ", i);
-                // subset[i] is test set, others are training sets
+                Console.WriteLine("Fold {0}: ", i);
+                //subset[i] is test set, others are training sets
                 List<string> trainingSet = new List<string>();
                 List<string> testTarget = new List<string>();
                 List<string> testSet = new List<string>();
@@ -161,17 +161,17 @@ namespace Classification
                     else
                         testTarget = subset[i];
                 }
-                //Console.WriteLine("The time to create training and test sets: {0} ", watch.ElapsedMilliseconds);
+                Console.WriteLine("The time to create training and test sets: {0} ", watch.ElapsedMilliseconds);
                 FileIO.WriteFile(testTarget, "../../validation/testTarget.txt");
                 //Remove label of testSetTarget
                 testSet = RemoveLabelOfList(testTarget);
                 //Write testSet and trainSet into file
                 FileIO.WriteFile(trainingSet, "../../validation/train.txt");
                 FileIO.WriteFile(testSet, "../../validation/test.txt");
-                //Console.WriteLine("The time to write training and test sets: {0} ", watch.ElapsedMilliseconds);
+                Console.WriteLine("The time to write training and test sets: {0} ", watch.ElapsedMilliseconds);
             
                 Bow_tfidf.GenerateTFIDFMatrix("../../validation/train.txt", "../../validation/processed.txt", "../../validation/features.txt", "../../validation/tf_idf.txt");
-                //Console.WriteLine("The time to calculate tf_idf: {0} ", watch.ElapsedMilliseconds);
+                Console.WriteLine("The time to calculate tf_idf: {0} ", watch.ElapsedMilliseconds);
 
                 Model.classifyForValidate();
 
@@ -188,9 +188,9 @@ namespace Classification
 
                 sum_Fmacro += calculateFmacroOrFscore(Rmacro, Pmacro);
                 sum_Fmicro += calculateFmicro(sourceVector, targetVector);
-                //watch.Stop();
+                watch.Stop();
                 var elapsedMs = watch.ElapsedMilliseconds;
-                //Console.WriteLine("Validating the fold {0} takes: {1} ",i, elapsedMs);
+                Console.WriteLine("Validating the fold {0} takes: {1} ",i, elapsedMs);
             }
 
             List<string> F_array = new List<string>();
