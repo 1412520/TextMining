@@ -121,15 +121,18 @@ namespace Classification
             int count = 0;
 
             List<string> testInput = FileIO.ReadFile(testFile);
-            foreach (string searchString in testInput)
+            for (int i = 0; i < testInput.Count; i++)
             {
+                var searchString = testInput[i];
                 //Vectorise, calculate tf_idf
                 Vector searchVector = Vector.Vectorise(searchString, featureFile);
 
                 //Get label of documents that are similar to searchString
                 Dictionary<int, double> similarDocIndex = searchVector.GetListSimilarityMeasure(tfidfList, numberOfDocs, similarityName);
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 label = GetLabelOfDocument(similarDocIndex.Keys.ToList(), trainFile);
-
+                watch.Stop();
+                Console.WriteLine("Get label of document {0} takes: {1} ", i, watch.Elapsed);
                 labeledString.Add(label + " - " + searchString);
                 count++;
             }

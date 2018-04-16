@@ -80,7 +80,7 @@ namespace Classification
 
         // 141242
         // Date: 08/04/2018
-        static void SplitTrainTest(List<string> data, int numberOfFolds)
+        public static void SplitTrainTest(List<string> data, int numberOfFolds)
         {
             //List<List<string>> subSets = new List<List<string>>(numberOfFolds);
 
