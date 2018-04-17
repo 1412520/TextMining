@@ -14,8 +14,8 @@ namespace Classification
         {
             string kFoldFile = "../../k_folds.txt";
             string rawFile = "../../training/raw_text.txt";
-            FileUtils.preprocessDirectory("../../input", "../../training/raw_text.txt");
-            CrossValidation.Validate(kFoldFile, rawFile);
+            //FileUtils.preprocessDirectory("../../input", "../../training/raw_text.txt");
+            CrossValidation.ClassifyAndValidateOne();
             //Model.classify();
             
         }

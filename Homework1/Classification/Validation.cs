@@ -33,9 +33,9 @@ namespace Classification
         //1412595
         public static double calculateRi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
         {
-            int temp1 = Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors);
-            int temp2 = Vector.CountClassElements(valueType, targetVectors);
-            return 1.0 * temp1 / temp2;
+            //int temp1 = Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors);
+            //int temp2 = Vector.CountClassElements(valueType, targetVectors);
+            return 1.0 * Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / Vector.CountClassElements(valueType, targetVectors);
         }
 
         //1412595
