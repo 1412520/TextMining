@@ -13,7 +13,7 @@ namespace Classification
         public static double CalculatePi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
         {
             if (Vector.CountClassElements(valueType, sourceVectors) == 0)
-                return 1.0;
+                return 0;
             else
                 return 1.0 * Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / Vector.CountClassElements(valueType, sourceVectors);
         }
@@ -62,7 +62,10 @@ namespace Classification
 
         public static double calculateFmacroOrFscore(Double R, Double P)
         {
-            return (1.0 * 2 * R * P) / (R + P);
+            if (R + P == 0)
+                return 0;
+            else
+                return (1.0 * 2 * R * P) / (R + P);
         }
 
         //1412543
