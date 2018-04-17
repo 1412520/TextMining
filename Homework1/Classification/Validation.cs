@@ -13,7 +13,7 @@ namespace Classification
         public static double CalculatePi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
         {
             if (Vector.CountClassElements(valueType, sourceVectors) == 0)
-                return 0;
+                return 1.0;
             else
                 return 1.0 * Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / Vector.CountClassElements(valueType, sourceVectors);
         }
@@ -217,6 +217,8 @@ namespace Classification
             var testsWithValueType = FileIO.ReadFile("../../validation/testTarget.txt");
             var testRecords = RemoveLabelOfList(testsWithValueType);
             FileIO.WriteFile(testRecords, "../../validation/test.txt");
+            Bow_tfidf.GenerateTFIDFMatrix("../../validation/train.txt", "../../validation/processed.txt", "../../validation/features.txt", "../../validation/tf_idf.txt");
+
             Model.classifyForValidate();
             Validate("../../validation/testTarget.txt", "../../validation/testResult.txt", "../../validation/result.txt");
         }
@@ -253,7 +255,7 @@ namespace Classification
             double Rmacro = sumR / classes.Count;
             double Fmacro = calculateFmacroOrFscore(Rmacro, Pmacro);
             result.Add("Fmacro " + Fmacro.ToString());
-            double Fmicro = preciseClassification / sampleVectors.Count;
+            double Fmicro = 1.0 * preciseClassification / sampleVectors.Count;
             result.Add("Fmicro " + Fmicro.ToString());
 
             FileIO.WriteFile(result, resultFile);

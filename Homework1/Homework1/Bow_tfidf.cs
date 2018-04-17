@@ -32,7 +32,7 @@ namespace Homework1
                     {
                         int quantity = Document.DocContainsFeature(item1, processDocs);
                         double idf = Math.Log10(1.0 * totalDocs / quantity);
-                        featureList.Add(item1, idf);
+                        if (idf != 0) featureList.Add(item1, idf);
                     }
                 }
             }
