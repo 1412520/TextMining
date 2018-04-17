@@ -28,9 +28,9 @@ namespace Homework1
         public Document(String _doc) 
         {
             maxFreq = 1;
-            //string[] splitDoc = _doc.Split(' ');
-            int nGramSize = Int16.Parse(FileIO.ReadFile(ConfigurationManager.AppSettings.Get("NgramSizeFile"))[0]);
-            List<string> splitDoc = Ngram.makeNgram(_doc, nGramSize);
+            string[] splitDoc = _doc.Split(' ');
+            //int nGramSize = Int16.Parse(FileIO.ReadFile(ConfigurationManager.AppSettings.Get("NgramSizeFile"))[0]);
+            //List<string> splitDoc = Ngram.makeNgram(_doc, nGramSize);
             termFrequency = new Dictionary<string, int>();
             for (int i = 0; i < splitDoc.Count(); i++)
             {
