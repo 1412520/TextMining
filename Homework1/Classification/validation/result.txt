@@ -1,8 +1,0 @@
-Plgm 1
-Rlgm 1
-Flgm 1
-Pspm 1
-Rspm 1
-Fspm 1
-Fmacro 1
-Fmicro 1
