@@ -125,7 +125,15 @@ namespace Classification
         // Cross validation
         public static void Validate(string kFoldsFile, string inputFile)
         {
-            
+            List<string> fileNameList = FileUtils.getAllFileNames("../../splited_data");
+            String trainFile = "../../validation/train.txt";
+            String processedFile = "../../validation/processed.txt";
+            String featuresFile = "../../validation/features.txt";
+            String tfIdfFile = "../../validation/tf_idf.txt";
+            String testFile = "../../validation/test.txt";
+            String testTargetFile = "../../validation/testTarget.txt";
+            String testResultFile = "../../validation/testResult.txt";
+
             // Read the number of subset
             int numberOfFolds = int.Parse(FileIO.ReadFile(kFoldsFile)[0]);
 
@@ -140,7 +148,6 @@ namespace Classification
             
             // Read subsets
             List<List<string>> subset = new List<List<string>>();
-            List<string> fileNameList = FileUtils.getAllFileNames("../../splited_data");
 
             foreach( string fileName in fileNameList)
             {
@@ -159,7 +166,6 @@ namespace Classification
                 //subset[i] is test set, others are training sets
                 List<string> trainingSet = new List<string>();
                 List<string> testTarget = new List<string>();
-                List<string> testSet = new List<string>();
                 for( int subIndex = 0; subIndex < numberOfFolds; subIndex++)
                 {
                     if (subIndex != i)
@@ -168,32 +174,31 @@ namespace Classification
                         testTarget = subset[i].ToList();
                 }
                 Console.WriteLine("The time to create training and test sets: {0} ", watch.ElapsedMilliseconds);
-                FileIO.WriteFile(testTarget, "../../validation/testTarget.txt");
+                FileIO.WriteFile(testTarget, testTargetFile);
                 //Remove label of testSetTarget
-                testSet = RemoveLabelOfList(testTarget);
+                List<Vector> targetVector = new List<Vector>();
+                var testSet = FileIO.ReadFileIntoVector(testTargetFile, out targetVector, true);
+                //testSet is removed label
+
                 //Write testSet and trainSet into file
-                FileIO.WriteFile(trainingSet, "../../validation/train.txt");
-                FileIO.WriteFile(testSet, "../../validation/test.txt");
+                FileIO.WriteFile(trainingSet, trainFile);
+                FileIO.WriteFile(testSet, testFile);
                 Console.WriteLine("The time to write training and test sets: {0} ", watch.ElapsedMilliseconds);
             
-                Bow_tfidf.GenerateTFIDFMatrix("../../validation/train.txt", "../../validation/processed.txt", "../../validation/features.txt", "../../validation/tf_idf.txt");
+                Bow_tfidf.GenerateTFIDFMatrix(trainFile, processedFile, featuresFile, tfIdfFile);
                 Console.WriteLine("The time to calculate tf_idf: {0} ", watch.ElapsedMilliseconds);
 
                 Model.classifyForValidate();
 
-                bool hasValueType = true;
-
-                List<Vector> targetVector = new List<Vector>();
-                List<string> testSetTarget = FileIO.ReadFileIntoVector("../../validation/testTarget.txt", out targetVector, hasValueType);
-
                 List<Vector> sourceVector = new List<Vector>();
-                List<string> testSetResult = FileIO.ReadFileIntoVector("../../validation/testResult.txt", out sourceVector, hasValueType);
+                FileIO.ReadFileIntoVector(testResultFile, out sourceVector, true);
 
                 Double Rmacro = calculateRmacro(sourceVector, targetVector);
                 Double Pmacro = CalculatePmacro(sourceVector, targetVector);
 
                 sum_Fmacro += calculateFmacroOrFscore(Rmacro, Pmacro);
                 sum_Fmicro += calculateFmicro(sourceVector, targetVector);
+
                 watch.Stop();
                 var elapsedMs = watch.ElapsedMilliseconds;
                 Console.WriteLine("Validating the fold {0} takes: {1} ",i, elapsedMs);
@@ -208,6 +213,7 @@ namespace Classification
 
             //Write avg Fmacro and avg Fmicro into file
             FileIO.WriteFile(F_array, "../../validation/result.txt");
+
         }
 
         //public static void ClassifyAndValidateOne(string trainFile, string sampleClassifiedFile, string classificationFile, string validationFile)
