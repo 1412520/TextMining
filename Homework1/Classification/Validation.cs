@@ -33,7 +33,9 @@ namespace Classification
         //1412595
         public static double calculateRi(string valueType, List<Vector> sourceVectors, List<Vector> targetVectors)
         {
-            return 1.0 * Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors) / Vector.CountClassElements(valueType, targetVectors);
+            int temp1 = Vector.CountShareSameTypeRecords(valueType, sourceVectors, targetVectors);
+            int temp2 = Vector.CountClassElements(valueType, targetVectors);
+            return 1.0 * temp1 / temp2;
         }
 
         //1412595
@@ -211,7 +213,7 @@ namespace Classification
         {
             var testsWithValueType = FileIO.ReadFile("../../validation/testTarget.txt");
             var testRecords = RemoveLabelOfList(testsWithValueType);
-            FileIO.WriteFile(testRecords, "../../validation/testResult.txt");
+            FileIO.WriteFile(testRecords, "../../validation/test.txt");
             Model.classifyForValidate();
             Validate("../../validation/testTarget.txt", "../../validation/testResult.txt", "../../validation/result.txt");
         }
