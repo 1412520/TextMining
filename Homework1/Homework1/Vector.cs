@@ -156,6 +156,7 @@ namespace Homework1
             return funcName(vector);
         }
 
+
         //public Dictionary<int, double> GetListSimilarityMeasure (List<Vector> listV, int quantity, string similarityName)
         //{
         //    if(quantity <= 0)
@@ -227,6 +228,15 @@ namespace Homework1
                     //watch.Stop();
                     //var elapsedMs = watch.ElapsedMilliseconds;
                     //Console.WriteLine(elapsedMs);
+
+                    rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
+                }
+                else if (similarityName == "SMTP")
+                {
+                    //var watch = System.Diagnostics.Stopwatch.StartNew();
+                    List<double> std = getStandardDeviationOfFeatures(vectors);
+                    for (int i = 0; i < vectors.Count(); i++)
+                        rs.Add(i, getSimilarityMeasureForTextMining(vectors[i], std));
 
                     rs = rs.OrderByDescending(key => key.Value).Take(quantity).ToDictionary(x => x.Key, x => x.Value);
                 }
@@ -353,6 +363,70 @@ namespace Homework1
                     count++;
             }
             return count;
+        }
+
+ ///////////////////////////////////////////////////////////////////////////////////
+        private List<double> getStandardDeviationOfFeatures(List<string> vectorStrings)
+        {
+            List<Vector> vectorList = new List<Vector>();
+            foreach(string vector in vectorStrings)
+            {
+                vectorList.Add(new Vector(vector));
+            }
+            
+            List<double> stdList = new List<double>(vectorList.Count);
+            int numberOfFeatures = vectorList[0].Value.Count;
+            for(int f = 0; f < numberOfFeatures; f++)
+            {
+                List<double> weight = new List<double>();
+                double mean, sumOfSquaresOfDifferences;
+                for (int v = 0; v < vectorList.Count; v++)
+                {
+                    if (vectorList[v].Value[f] != 0)
+                    {
+                        weight.Add(vectorList[v].Value[f]);
+                    }
+                }
+                mean = weight.Average();
+                sumOfSquaresOfDifferences = weight.Select(x => (x - mean) * (x - mean)).Sum();
+                stdList.Add(Math.Sqrt(sumOfSquaresOfDifferences / weight.Count));
+            }
+            return stdList;
+        }
+
+        // 1412542
+        public double getSimilarityMeasureForTextMining(string weight, List<double> std, double lambda = 1)
+        {
+            var vector = weight.Split(' ');
+            if (Value.Count != vector.Count() - 1)
+                return 0;
+
+            // Tính hàm F
+            double sumNumerator, sumDenominator;
+            sumDenominator = 0;
+            sumNumerator = 0;
+            for(int i = 0; i < std.Count(); i++)
+            {
+                double w = double.Parse(vector[i]);
+                if ( w != 0 && this.Value[i] != 0)
+                {
+                    sumNumerator += 0.5 * (1 + Math.Exp(-Math.Pow((w - this.Value[i]) / std[i], 2)));
+                    sumDenominator++;
+                }
+                else
+                if (w == 0 && this.Value[i] == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    sumNumerator -= lambda;
+                    sumDenominator++;
+                }
+            }
+            double f = sumNumerator / sumDenominator;
+
+            return (f + lambda) / (1 + lambda);
         }
 
     }

@@ -25,7 +25,7 @@ namespace Homework1
         }
 
         //1412503
-        public Document(String _doc) 
+        public Document(String _doc)
         {
             maxFreq = 1;
             string[] splitDoc = _doc.Split(' ');

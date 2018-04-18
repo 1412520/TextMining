@@ -32,7 +32,7 @@ namespace Homework1
                     {
                         int quantity = Document.DocContainsFeature(item1, processDocs);
                         double idf = Math.Log10(1.0 * totalDocs / quantity);
-                        featureList.Add(item1, idf);
+                        if (idf != 0) featureList.Add(item1, idf);
                     }
                 }
             }
@@ -101,7 +101,6 @@ namespace Homework1
 
                 }
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -118,9 +117,13 @@ namespace Homework1
             foreach (var row in rows)
             {
                 var standardRow = StringHelper.RemoveMarksExtraSpaces(row, new HashSet<char> { '!', '/', '-', '=', '~', '?', ':', ';', '\'', '"', '(', ')', '[', ']', '{', '}' });
-                var words = standardRow.Split(' ');
-                if (words.Length > 1)
-                    featuresIdf.Add(words[0], double.Parse(words[1]));
+                if (!String.IsNullOrEmpty(standardRow))
+                {
+                    int i = standardRow.LastIndexOf(' ');
+                    var idf = standardRow.Substring(i + 1);
+                    var words = standardRow.Substring(0, i);
+                    featuresIdf.Add(words, double.Parse(idf));
+                }
             }
             return featuresIdf;
         }

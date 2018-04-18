@@ -114,7 +114,6 @@ namespace Classification
 
             //Get Tf_idf from file
             List<string> tfidfList = FileIO.ReadFile(tfidfFile);
-            List<Vector> tfidfVector = new List<Vector>(tfidfList.Count);
 
             List<string> labeledString = new List<string>();
             string label;
