@@ -349,7 +349,7 @@ namespace Homework1
             int count = 0;
             for (int i =0; i<sourceVectors.Count; i++)
             {
-                if (CheckIfContained(sourceVectors[i], targetVectors))
+                if ((sourceVectors[i].ValueType == valueType) && CheckIfContained(sourceVectors[i], targetVectors))
                     count++;
             }
             return count;

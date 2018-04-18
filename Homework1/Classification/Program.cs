@@ -17,7 +17,6 @@ namespace Classification
             FileUtils.preprocessDirectory("../../input", "../../training/raw_text.txt");
             CrossValidation.Validate(kFoldFile, rawFile);
             //Model.classify();
-            
         }
     }
 }

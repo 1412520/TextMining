@@ -81,7 +81,11 @@ namespace Homework1
                 round = Int16.Parse(FileIO.ReadFile(roundFile)[0]);
                 wordList = GetFeaturesIdf(featureFile);
                 if (File.Exists(output))
+                {
                     File.Delete(output);
+                }
+
+                
                 using (StreamWriter wr = new StreamWriter(output, true))
                 {
                     for (int i = 0; i < docList.Count; i++)
