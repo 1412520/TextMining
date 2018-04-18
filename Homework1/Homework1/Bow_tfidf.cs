@@ -85,7 +85,6 @@ namespace Homework1
                     File.Delete(output);
                 }
                 File.Create(output).Close();
-
                 using (StreamWriter wr = new StreamWriter(output, true))
                 {
                     for (int i = 0; i < docList.Count; i++)
