@@ -10,7 +10,7 @@ namespace Homework1
     {
         public static List<string> makeNgram(string text, int nGramSize)
         {
-            StringBuilder nGram = new StringBuilder();
+            String nGram = "";
             Queue<int> wordLengths = new Queue<int>();
             int wordCount = 0;
             int lastWordLen = 0;
@@ -18,7 +18,8 @@ namespace Homework1
             int temp = 0;
             if (text != "" && char.IsLetterOrDigit(text[0]))
             {
-                nGram.Append(text[0]);
+                //nGram.Append(text[0]);
+                nGram += text[0].ToString();
                 lastWordLen++;
                 temp = 1;
             }
@@ -35,7 +36,7 @@ namespace Homework1
                       )
                    )
                 {
-                    nGram.Append(text[i]);
+                    nGram += text[i].ToString();
                     lastWordLen++;
                 }
                 else
@@ -47,16 +48,19 @@ namespace Homework1
                         wordCount++;
                         if (wordCount >= nGramSize)
                         {
-                            result.Add(nGram.ToString());
-                            nGram.Remove(0, wordLengths.Dequeue() + 1);
+                            result.Add(nGram.ToString().Trim());
+                            if (nGramSize > 1)
+                                nGram = nGram.Remove(0, wordLengths.Dequeue() + 1);
+                            else
+                                nGram = nGram.Trim().Remove(0, wordLengths.Dequeue());
                             wordCount -= 1;
                         }
-                        nGram.Append(" ");
+                        nGram += " ";
                     }
                 }
             }
             if(temp == 1)
-                result.Add(nGram.ToString()+text[text.Length - 1]);
+                result.Add(nGram.ToString().Trim()+text[text.Length - 1]);
             return result;
         }
     }
