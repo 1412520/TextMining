@@ -1,3 +1,0 @@
-t f a
-l a r
-d g

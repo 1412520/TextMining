@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("1412503_test")]
+[assembly: AssemblyTitle("StanfordCoreNLP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("1412503_test")]
+[assembly: AssemblyProduct("StanfordCoreNLP")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9ab27447-878c-47ba-8e06-327c210a5673")]
+[assembly: Guid("3caa8551-ab81-49ae-9336-dc9a3c914fc2")]
 
 // Version information for an assembly consists of the following four values:
 //
