@@ -1,4 +1,8 @@
-﻿using System;
+﻿using edu.stanford.nlp.ling;
+using edu.stanford.nlp.tagger.maxent;
+using java.io;
+using java.util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +14,8 @@ namespace StanfordCoreNLP
     {
         static void Main(string[] args)
         {
+            PartOfSpeech.Demonstrate();
+
         }
     }
 }
