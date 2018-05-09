@@ -6,24 +6,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Console = System.Console;
 
 namespace StanfordCoreNLP
 {
     public class PartOfSpeech
     {
 
-        public MaxentTagger _tagger { get; set; }
+        private MaxentTagger _tagger;
 
         public PartOfSpeech(string modelPath)
         {
-            _tagger = new MaxentTagger(modelPath);
+            try
+            {
+                _tagger = new MaxentTagger(modelPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         public string TagSentence(string sentence)
         {
             var tokenizedSentence = (ArrayList)MaxentTagger.tokenizeText(new StringReader(sentence)).get(0);
-            var taggedSentence = _tagger.tagSentence(tokenizedSentence);
-            return taggedSentence.ToString();
+            var taggedSentence = _tagger.tagSentence(tokenizedSentence).toArray();
+            return string.Join(" ", taggedSentence);
         }
 
         public static void Demonstrate()
@@ -39,7 +48,7 @@ namespace StanfordCoreNLP
            var tagger = new PartOfSpeech(model);
 
             // Text for tagging
-            var text = "I will book a meeting tonight, do you read that book?";
+            var text = "I will book a meeting tonight\ndo you read that book?";
             var taggedResult = tagger.TagSentence(text);
             System.Console.WriteLine(taggedResult);
         }

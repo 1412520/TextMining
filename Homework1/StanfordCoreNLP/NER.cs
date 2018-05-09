@@ -46,5 +46,4 @@ namespace StanfordCoreNLP
 
     }
         
-    }
 }
