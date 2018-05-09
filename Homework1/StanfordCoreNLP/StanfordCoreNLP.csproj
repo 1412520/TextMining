@@ -165,9 +165,9 @@
       <HintPath>..\packages\Stanford.NLP.CoreNLP.3.9.1.0\lib\protobuf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="slf4j-api, Version=1.7.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stanford.NLP.CoreNLP.3.9.1.0\lib\slf4j-api.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="slf4j-api, Version=1.7.5.4, Culture=neutral, PublicKeyToken=caeb68ac682d6c33, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\slf4j-api.1.7.5.4\lib\net35\slf4j-api.dll</HintPath>
     </Reference>
     <Reference Include="slf4j-simple, Version=1.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Stanford.NLP.CoreNLP.3.9.1.0\lib\slf4j-simple.dll</HintPath>
@@ -192,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NER.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="PartOfSpeech.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

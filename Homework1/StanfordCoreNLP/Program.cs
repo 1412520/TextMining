@@ -1,7 +1,7 @@
 ﻿using edu.stanford.nlp.ling;
 using edu.stanford.nlp.tagger.maxent;
-using java.io;
-using java.util;
+//using java.io;
+//using java.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +14,8 @@ namespace StanfordCoreNLP
     {
         static void Main(string[] args)
         {
-            PartOfSpeech.Demonstrate();
-
+           //PartOfSpeech.Demonstrate();
+           //Parser.ParserString("This is an example of dependency grammar");
         }
     }
 }
