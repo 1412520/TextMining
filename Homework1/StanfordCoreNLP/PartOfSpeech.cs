@@ -19,7 +19,9 @@ namespace StanfordCoreNLP
         {
             try
             {
-                _tagger = new MaxentTagger(modelPath);
+                Properties props = new Properties();
+                props.setProperty("tagSeparator", "_");
+                _tagger = new MaxentTagger(modelPath, props);
             }
             catch (Exception ex)
             {
@@ -40,6 +42,7 @@ namespace StanfordCoreNLP
             var jarRoot = @"../../../data/paket-files/stanford-postagger-full-2018-02-27";
             var modelsDirectory = jarRoot + @"/models";
             var model = modelsDirectory + @"/wsj-0-18-bidirectional-nodistsim.tagger";
+
 
             if (!System.IO.File.Exists(model))
                 throw new Exception($"Check path to the model file '{model}'");
