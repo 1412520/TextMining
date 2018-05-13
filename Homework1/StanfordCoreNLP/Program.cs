@@ -14,8 +14,8 @@ namespace StanfordCoreNLP
     {
         static void Main(string[] args)
         {
-           //PartOfSpeech.Demonstrate();
-           //Parser.ParserString("This is an example of dependency grammar");
+            //PartOfSpeech.Demonstrate();
+            //Parser.ParserString("This is an example of dependency grammar");
         }
     }
 }
