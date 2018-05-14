@@ -52,8 +52,6 @@ namespace StanfordCoreNLP
 
             // Result
             var corefChainAnnotation = new CorefCoreAnnotations.CorefChainAnnotation().getClass();
-            var sentencesAnnotation = new CoreAnnotations.SentencesAnnotation().getClass();
-            var corefMentionsAnnotation = new CorefCoreAnnotations.CorefMentionsAnnotation().getClass();
 
             Console.WriteLine("---");
             Console.WriteLine("coref chains");
@@ -61,17 +59,6 @@ namespace StanfordCoreNLP
             foreach (CorefChain cc in corefChain.values().toArray())
             {
                 Console.WriteLine($"\t{cc}");
-            }
-            var sentences = annotation.get(sentencesAnnotation) as ArrayList;
-            foreach (CoreMap sentence in sentences.toArray())
-            {
-                Console.WriteLine("---");
-                Console.WriteLine("mentions");
-                var corefMentions = sentence.get(corefMentionsAnnotation) as ArrayList;
-                foreach (Mention m in corefMentions)
-                {
-                    Console.WriteLine("\t" + m);
-                }
             }
         }
     }
