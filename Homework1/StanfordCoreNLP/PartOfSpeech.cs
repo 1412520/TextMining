@@ -26,8 +26,7 @@ namespace StanfordCoreNLP
             _modelPath = _modelPath + GetPOSModel(posMode);
             if (!System.IO.File.Exists(_modelPath))
                 throw new Exception($"Check path to the model file '{_modelPath}'");
-            var props = new Properties();
-            _tagger = new MaxentTagger(_modelPath, props, false);
+            _tagger = new MaxentTagger(_modelPath);
         }
 
         public string TagSentence(string sentence)
@@ -48,7 +47,7 @@ namespace StanfordCoreNLP
             }
         }
 
-        public static void Tag(string text, POSMode posMode = 0)
+        public static void Tag(string text, POSMode posMode = POSMode.Left3Words)
         {
 
             //Loading POS Tagger
