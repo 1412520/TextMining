@@ -14,8 +14,12 @@ namespace StanfordCoreNLP
     {
         static void Main(string[] args)
         {
-           PartOfSpeech.Demonstrate();
-           //Parser.ParserString("This is an example of dependency grammar");
+           //PartOfSpeech.Tag("Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday.\r\nHe chose her because she had foreign affairs experience as a former First Lady", POSMode.Left3Words);
+          // Parser.ParserString("This is an example of dependency grammar");
+           //var ner = new NER(NERMode.SevenClasses);
+           //Console.WriteLine(ner.classifyToString("Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday.\r\nHe chose her because she had foreign affairs experience as a former First Lady"));
+           //Tokenisation.TokenizeText("Kosgi Santosh sent an email to Stanford University. He didn't get a reply.");
+            //CorefAnnotator.FindCoreferenceResolution();
         }
     }
 }

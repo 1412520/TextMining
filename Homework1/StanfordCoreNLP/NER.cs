@@ -12,14 +12,30 @@ namespace StanfordCoreNLP
     public class NER
     {
         // Path to the folder with classifiers models
-        string classifiersDirecrory = @"../../stanford-ner-2013-06-20/classifiers";
-        string model = @"/english.muc.7class.distsim.crf.ser.gz";
+        string classifiersDirecrory = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/edu/stanford/nlp/models/ner";
+        string model = @"/english.all.3class.distsim.crf.ser.gz";
 
         public NER() {  }
 
         public NER(string model)
         {
             this.model = model;
+        }
+
+        public NER(NERMode nerMode)
+        {
+            switch (nerMode)
+            {
+                case NERMode.FourClasses:
+                    model = @"/english.conll.4class.distsim.crf.ser.gz";
+                    break;
+                case NERMode.SevenClasses:
+                    model = @"/english.muc.7class.distsim.crf.ser.gz";
+                    break;
+                default:
+                    model = @"/english.all.3class.distsim.crf.ser.gz";
+                    break;
+            }
         }
 
         public string classifyToString(string sentence, string outputFormat = "slashTags")

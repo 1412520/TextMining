@@ -13,12 +13,12 @@ using StanfordNLP = edu.stanford.nlp.pipeline;
 
 namespace StanfordCoreNLP
 {
-    class Tokenisation
+    public class Tokenisation
     {
         public static void TokenizeText(string text)
         {
             // Path to the folder with models extracted from `stanford-corenlp-3.7.0-models.jar`
-            var jarRoot = @"../../data/paket-files/stanford-corenlp-full-2016-10-31/models";
+            var jarRoot = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/edu/stanford/nlp/models";
 
             // Text for processing
             //var text = "Kosgi Santosh sent an email to Stanford University. He didn't get a reply.";

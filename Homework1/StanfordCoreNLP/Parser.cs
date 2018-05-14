@@ -20,7 +20,7 @@ namespace StanfordCoreNLP
         public static void ParserString(string sentence)
         {
             // Path to models extracted from `stanford-parser-3.6.0-models.jar`
-            var modelsDirectory = @"../../stanford-parser-3.9.1-models/edu/stanford/nlp/models";
+            var modelsDirectory = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/edu/stanford/nlp/models";
             var model = @"/lexparser/englishPCFG.ser.gz";
             //var model = @"/parser/nndep/english_SD.gz";
 
