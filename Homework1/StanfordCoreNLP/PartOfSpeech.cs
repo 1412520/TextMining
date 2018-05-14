@@ -14,18 +14,19 @@ namespace StanfordCoreNLP
     {
 
         private MaxentTagger _tagger;
+        private string _modelPath = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/edu/stanford/nlp/models/pos-tagger";
 
         public PartOfSpeech(string modelPath)
         {
-            try
-            {
-                _tagger = new MaxentTagger(modelPath);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            _tagger = new MaxentTagger(modelPath,null, false);
+        }
 
+        public PartOfSpeech(POSMode posMode)
+        {
+            _modelPath = _modelPath + GetPOSModel(posMode);
+            if (!System.IO.File.Exists(_modelPath))
+                throw new Exception($"Check path to the model file '{_modelPath}'");
+            _tagger = new MaxentTagger(_modelPath);
         }
 
         public string TagSentence(string sentence)
@@ -35,20 +36,22 @@ namespace StanfordCoreNLP
             return string.Join(" ", taggedSentence);
         }
 
-        public static void Demonstrate()
+        private static string GetPOSModel(POSMode posMode)
         {
-            var jarRoot = @"../../../data/paket-files/stanford-postagger-full-2018-02-27";
-            var modelsDirectory = jarRoot + @"/models";
-            var model = modelsDirectory + @"/wsj-0-18-bidirectional-nodistsim.tagger";
+            switch (posMode)
+            {
+                case POSMode.Bidirectional:
+                    return @"/english-bidirectional/english-bidirectional-distsim.tagger";
+                default:
+                    return @"/english-left3words/english-left3words-distsim.tagger";
+            }
+        }
 
-            if (!System.IO.File.Exists(model))
-                throw new Exception($"Check path to the model file '{model}'");
+        public static void Tag(string text, POSMode posMode = POSMode.Left3Words)
+        {
 
             //Loading POS Tagger
-           var tagger = new PartOfSpeech(model);
-
-            // Text for tagging
-            var text = "I will book a meeting tonight\ndo you read that book?";
+            var tagger = new PartOfSpeech(posMode);
             var taggedResult = tagger.TagSentence(text);
             System.Console.WriteLine(taggedResult);
         }

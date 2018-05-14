@@ -15,8 +15,9 @@ using edu.stanford.nlp.coref.data;
 using java.lang;
 using System.IO;
 // use .NET framework 3.5
+using StanfordNLP = edu.stanford.nlp.pipeline;
 
-namespace Stanford_CoreNLP
+namespace StanfordCoreNLP
 {
     public class CorefAnnotator
     {
@@ -24,17 +25,17 @@ namespace Stanford_CoreNLP
         {
             var text = "Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday. He chose her because she had foreign affairs experience as a former First Lady.";
 
-            var jarRoot = @"..\..\..\..\data\paket-files\nlp.stanford.edu\stanford-english-corenlp-2018-02-27-models";
+            var jarRoot = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/";
             var propsFile = Path.Combine(jarRoot, "StanfordCoreNLP.properties");
             var props = new Properties();
-            props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref");
+            props.setProperty("annotators", "coref");
             props.load(new FileReader(propsFile));
             props.setProperty("ner.useSUTime", "0");
 
             // We should change current directory, so StanfordCoreNLP could find all the model files automatically
             var curDir = Environment.CurrentDirectory;
             Directory.SetCurrentDirectory(jarRoot);
-            var pipeline = new StanfordCoreNLP(props);
+            var pipeline = new StanfordNLP.StanfordCoreNLP(props);
             Directory.SetCurrentDirectory(curDir);
 
             // Annotation
