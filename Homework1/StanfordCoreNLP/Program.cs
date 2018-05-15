@@ -16,14 +16,8 @@ namespace StanfordCoreNLP
     {
         public static void Main(string[] args)
         {
-           //PartOfSpeech.Tag("Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday.\r\nHe chose her because she had foreign affairs experience as a former First Lady", POSMode.Left3Words);
-          // Parser.ParserString("This is an example of dependency grammar");
-           //var ner = new NER(NERMode.SevenClasses);
-           //Console.WriteLine(ner.classifyToString("Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday.\r\nHe chose her because she had foreign affairs experience as a former First Lady"));
-           //Tokenisation.TokenizeText("Kosgi Santosh sent an email to Stanford University. He didn't get a reply.");
-            //CorefAnnotator.FindCoreferenceResolution();
-            Demonstrate("The original CRF code is by Jenny", POSMode.Left3Words, NERMode.SevenClasses);
-
+            Demonstrate("I love Su, he gives hope in my desperate life.", POSMode.Left3Words, NERMode.SevenClasses);
+            Pipeline.Execute("tokenize, ssplit, pos, lemma, ner", "This is a sentence");
         }
 
         public static void Demonstrate(string text, POSMode partOfSpeechMode, NERMode namedEntityRecognitionMode, bool disableLogging = true)
@@ -52,11 +46,11 @@ namespace StanfordCoreNLP
 
             //Parser
             Console.WriteLine("Parsed Text:");
-            Parser.ParserString(text);
+            Parser.ParseString(text);
             Console.WriteLine("\n\n\n");
 
             //Find co-reference
-            CorefAnnotator.FindCoreferenceResolution();
+            CorefAnnotator.FindCoreferenceResolution(text);
         }
     }
 }

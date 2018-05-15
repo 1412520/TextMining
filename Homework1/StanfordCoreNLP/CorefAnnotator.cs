@@ -21,14 +21,14 @@ namespace StanfordCoreNLP
 {
     public class CorefAnnotator
     {
-        public static void FindCoreferenceResolution()
+        public static void FindCoreferenceResolution(string text)
         {
-            var text = "Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday. He chose her because she had foreign affairs experience as a former First Lady.";
+            //var text = "Barack Obama nominated Hillary Rodham Clinton as his secretary of state on Monday. He chose her because she had foreign affairs experience as a former First Lady.";
 
             var jarRoot = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/";
             var propsFile = Path.Combine(jarRoot, "StanfordCoreNLP.properties");
             var props = new Properties();
-            props.setProperty("annotators", "coref");
+            //props.setProperty("annotators", "coref");
             props.load(new FileReader(propsFile));
             props.setProperty("ner.useSUTime", "0");
 
@@ -62,17 +62,17 @@ namespace StanfordCoreNLP
             {
                 Console.WriteLine($"\t{cc}");
             }
-            var sentences = annotation.get(sentencesAnnotation) as ArrayList;
-            foreach (CoreMap sentence in sentences.toArray())
-            {
-                Console.WriteLine("---");
-                Console.WriteLine("mentions");
-                var corefMentions = sentence.get(corefMentionsAnnotation) as ArrayList;
-                foreach (Mention m in corefMentions)
-                {
-                    Console.WriteLine("\t" + m);
-                }
-            }
+            //var sentences = annotation.get(sentencesAnnotation) as ArrayList;
+            //foreach (CoreMap sentence in sentences.toArray())
+            //{
+            //    Console.WriteLine("---");
+            //    Console.WriteLine("mentions");
+            //    var corefMentions = sentence.get(corefMentionsAnnotation) as ArrayList;
+            //    foreach (Mention m in corefMentions)
+            //    {
+            //        Console.WriteLine("\t" + m);
+            //    }
+            //}
         }
     }
 }

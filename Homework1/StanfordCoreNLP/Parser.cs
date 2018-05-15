@@ -17,7 +17,7 @@ namespace StanfordCoreNLP
     {
         public Parser() { }
 
-        public static void ParserString(string sentence)
+        public static void ParseString(string sentence)
         {
             // Path to models extracted from `stanford-parser-3.6.0-models.jar`
             var modelsDirectory = @"../../../data/paket-files/stanford-corenlp-3.9.1-models/edu/stanford/nlp/models";
@@ -28,23 +28,23 @@ namespace StanfordCoreNLP
             var lp = LexicalizedParser.loadModel(modelsDirectory + model);
 
             // This sample shows parsing a list of correctly tokenized words
-            var rawWords = SentenceUtils.toCoreLabelList(sentence);
-            var tree = lp.apply(rawWords);
-            tree.pennPrint();
+            //var rawWords = SentenceUtils.toCoreLabelList(sentence);
+            //var tree = lp.apply(rawWords);
+            //tree.pennPrint();
 
             // This option shows loading and using an explicit tokenizer
             var tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
             var sent2Reader = new StringReader(sentence);
             var rawWords2 = tokenizerFactory.getTokenizer(sent2Reader).tokenize();
-            sent2Reader.close();
+            //sent2Reader.close();
             var tree2 = lp.apply(rawWords2);
 
             // Extract dependencies from lexical tree
-            var tlp = new PennTreebankLanguagePack();
-            var gsf = tlp.grammaticalStructureFactory();
-            var gs = gsf.newGrammaticalStructure(tree2);
-            var tdl = gs.typedDependenciesCCprocessed();
-            Console.WriteLine("\n{0}\n", tdl);
+            //var tlp = new PennTreebankLanguagePack();
+            //var gsf = tlp.grammaticalStructureFactory();
+            //var gs = gsf.newGrammaticalStructure(tree2);
+            //var tdl = gs.typedDependenciesCCprocessed();
+            //Console.WriteLine("\n{0}\n", tdl);
 
             // Extract collapsed dependencies from parsed tree
             var tp = new TreePrint("penn,typedDependenciesCollapsed");

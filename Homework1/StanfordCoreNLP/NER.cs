@@ -41,8 +41,7 @@ namespace StanfordCoreNLP
         public string classifyToString(string sentence, string outputFormat = "slashTags")
         {
             // Loading classes classifier model
-            var classifier = CRFClassifier.getClassifierNoExceptions(
-                classifiersDirecrory + model);
+            var classifier = CRFClassifier.getClassifierNoExceptions(classifiersDirecrory + model);
 
             return classifier.classifyToString(sentence, outputFormat, true);
             //.WriteLine("{0}\n", classifier.classifyToString(sentence, outputFormat, true));

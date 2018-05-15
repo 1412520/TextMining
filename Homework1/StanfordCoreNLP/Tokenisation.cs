@@ -20,8 +20,7 @@ namespace StanfordCoreNLP
         {
 
             var temp = new StringReader(text);
-            PTBTokenizer ptbt = new PTBTokenizer(temp,
-              new CoreLabelTokenFactory(), "");
+            PTBTokenizer ptbt = new PTBTokenizer(temp, new CoreLabelTokenFactory(), "");
             while (ptbt.hasNext())
             {
                 CoreLabel label = (CoreLabel) ptbt.next();
