@@ -57,8 +57,9 @@ namespace StanfordCoreNLP
                 //new TreePrint("penn,typedDependenciesCollapsed").printTree(parsedText);
                 foreach (CoreLabel token in (ArrayList)sentence.get(tokensAnnotaion))
                 {
-                    Console.WriteLine($"token: {token.value()}-{token.get(posAnnotation)}/{token.get(nerAnnotaion)}");
+                    Console.Write($"token: {token.value()}-{token.get(posAnnotation)}/{token.get(nerAnnotaion)}");
                 }
+                Console.WriteLine();
             }
         }
     }

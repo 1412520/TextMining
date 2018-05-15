@@ -29,6 +29,18 @@ namespace StanfordCoreNLP
             _tagger = new MaxentTagger(_modelPath);
         }
 
+        public string TagSentences(string text)
+        {
+            var tokenizedSentences = (ArrayList)MaxentTagger.tokenizeText(new StringReader(text));
+            var taggedSentences = _tagger.process(tokenizedSentences) as ArrayList;
+            var result = new StringBuilder();
+            foreach (ArrayList sentence in taggedSentences)
+            {
+                result.Append(string.Join(" ", sentence.toArray()));
+            }
+            return result.ToString();
+        }
+
         public string TagSentence(string sentence)
         {
             var tokenizedSentence = (ArrayList)MaxentTagger.tokenizeText(new StringReader(sentence)).get(0);
@@ -52,7 +64,7 @@ namespace StanfordCoreNLP
 
             //Loading POS Tagger
             var tagger = new PartOfSpeech(posMode);
-            var taggedResult = tagger.TagSentence(text);
+            var taggedResult = tagger.TagSentences(text);
             System.Console.WriteLine(taggedResult);
         }
     }
