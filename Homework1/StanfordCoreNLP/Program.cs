@@ -16,8 +16,8 @@ namespace StanfordCoreNLP
     {
         public static void Main(string[] args)
         {
-            Demonstrate("I love Su, he gives hope in my desperate life.", POSMode.Left3Words, NERMode.SevenClasses);
-            Pipeline.Execute("tokenize, ssplit, pos, lemma, ner", "This is a sentence");
+            Demonstrate("Will Smith booked a meeting at the library to read a book that he ordered from France in July", POSMode.Bidirectional, NERMode.SevenClasses, false);
+            //Pipeline.Execute("tokenize, ssplit, pos, lemma, ner, parse", "This is a sentence", false);
         }
 
         public static void Demonstrate(string text, POSMode partOfSpeechMode, NERMode namedEntityRecognitionMode, bool disableLogging = true)
@@ -25,29 +25,29 @@ namespace StanfordCoreNLP
             if (disableLogging)
                 RedwoodConfiguration.current().clear().apply();
             //Input
-            Console.WriteLine("Input: {0}\n\n\n", text);
+            //Console.WriteLine("Input: {0}\n\n\n", text);
 
-            //Tokenization
-            Console.WriteLine("Tokenization:");
-            Tokenisation.TokenizeText(text);
-            Console.WriteLine("\n\n\n");
+            ////Tokenization
+            //Console.WriteLine("Tokenization:");
+            //Tokenisation.TokenizeText(text);
+            //Console.WriteLine("\n\n\n");
 
-            //POS
-            Console.WriteLine("Part Of Speech:");
-            PartOfSpeech.Tag(text, partOfSpeechMode);
-            Console.WriteLine("\n\n\n");
+            ////POS
+            //Console.WriteLine("Part Of Speech:");
+            //PartOfSpeech.Tag(text, partOfSpeechMode);
+            //Console.WriteLine("\n\n\n");
 
-            //NER
-            Console.WriteLine("Named Entity Recognition:");
-            var ner = new NER(namedEntityRecognitionMode);
-            Console.WriteLine(ner.classifyToString(text));
-            Console.WriteLine("\n\n\n");
+            ////NER
+            //Console.WriteLine("Named Entity Recognition:");
+            //var ner = new NER(namedEntityRecognitionMode);
+            //Console.WriteLine(ner.classifyToString(text));
+            //Console.WriteLine("\n\n\n");
 
 
-            //Parser
-            Console.WriteLine("Parsed Text:");
-            Parser.ParseString(text);
-            Console.WriteLine("\n\n\n");
+            ////Parser
+            //Console.WriteLine("Parsed Text:");
+            //Parser.ParseString(text);
+            //Console.WriteLine("\n\n\n");
 
             //Find co-reference
             CorefAnnotator.FindCoreferenceResolution(text);

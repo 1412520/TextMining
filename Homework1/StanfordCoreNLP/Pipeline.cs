@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using edu.stanford.nlp.coref.data;
 using edu.stanford.nlp.ling;
+using edu.stanford.nlp.semgraph;
 using edu.stanford.nlp.trees;
 using edu.stanford.nlp.util;
 using edu.stanford.nlp.util.logging;
@@ -48,18 +49,25 @@ namespace StanfordCoreNLP
 
             //get nerAnnotation to get NER result of each token
             var nerAnnotaion = new CoreAnnotations.NamedEntityTagAnnotation().getClass();
-            //var deparseAnnotation = new TreeCoreAnnotations.TreeAnnotation().getClass();
+            var deparseAnnotation = new TreeCoreAnnotations.TreeAnnotation().getClass();
+            //deparseAnnotation = new TypedDependency().getClass();
             var sentences = annotation.get(sentencesAnnotation) as ArrayList;
             foreach (CoreMap sentence in sentences.toArray())
             {
-                Console.WriteLine("Parsed Text: ");
-                //var parsedText = (Tree) sentence.get(deparseAnnotation);
-                //new TreePrint("penn,typedDependenciesCollapsed").printTree(parsedText);
-                foreach (CoreLabel token in (ArrayList)sentence.get(tokensAnnotaion))
+
+                var tokens = (ArrayList) sentence.get(tokensAnnotaion);
+                Console.WriteLine("Token-POS-NER: ");
+                foreach (CoreLabel token in tokens)
                 {
-                    Console.Write($"token: {token.value()}-{token.get(posAnnotation)}/{token.get(nerAnnotaion)}");
+                    Console.Write($"{token.value()}-{token.get(posAnnotation)}-{token.get(nerAnnotaion)} ");
                 }
-                Console.WriteLine();
+                Console.WriteLine("\n\n\n");
+                var parsedText = (Tree)sentence.get(deparseAnnotation);
+                if (parsedText != null)
+                {
+                    Console.WriteLine("Parsed Text: ");
+                    new TreePrint("penn,typedDependenciesCollapsed").printTree(parsedText);
+                }
             }
         }
     }
